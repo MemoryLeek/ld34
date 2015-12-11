@@ -17,8 +17,10 @@ void Window::run()
 
 	StateHandler stateHandler(window);
 
+	sf::Clock deltaTimer;
 	while (window.isOpen())
 	{
+		const auto& delta = deltaTimer.restart();
 		IState& state = stateHandler.currentState();
 
 		while (window.pollEvent(event))
@@ -26,9 +28,11 @@ void Window::run()
 			routeEvent(event, window, state);
 		}
 
+		state.update(delta);
+
 		window.clear(sf::Color::White);
 
-		state.draw();
+		window.draw(state);
 
 		window.display();
 	}

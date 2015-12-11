@@ -10,21 +10,23 @@ SOURCES += main.cpp \
 	tiled/Tileset.cpp \
 	tiled/Map.cpp \
 	tiled/Layer.cpp \
-    Light.cpp \
-    Window.cpp \
-    states/TestState.cpp \
-    StateHandler.cpp
+	Light.cpp \
+	Window.cpp \
+	states/TestState.cpp \
+	StateHandler.cpp \
+	Entity.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
 	tiled/Map.h \
 	tiled/Layer.h \
-    Light.h \
-    Window.h \
-    IState.h \
-    states/TestState.h \
+	Light.h \
+	Window.h \
+	IState.h \
+	states/TestState.h \
 	StateHandler.h \
-	Util.h
+	Util.h \
+	Entity.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src
