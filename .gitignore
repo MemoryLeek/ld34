@@ -1,0 +1,4 @@
+Makefile
+*.pro.*
+build/
+bin/ld34
