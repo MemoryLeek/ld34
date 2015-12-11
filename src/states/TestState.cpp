@@ -1,25 +1,29 @@
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "StateCreationContext.h"
 #include "TestState.h"
 #include "Util.h"
 
-TestState::TestState(sf::RenderWindow& window)
-	: m_window(window)
+TestState::TestState(StateCreationContext &context)
+	: m_window(context)
 	, m_mouseLight(512, m_normalMapFbo.getTexture(), sf::Color::White)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal)
 	, m_map("maps/1.json")
 {
-	m_lightBuffer.create(window.getSize().x, window.getSize().y);
-	m_normalMapFbo.create(window.getSize().x, window.getSize().y);
+	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
+	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
 	m_testEntity.setPosition(16 * 50, 16 * 10);
 }
 
-void TestState::update(const sf::Time &delta)
+void TestState::update(const float delta)
 {
-	m_testEntity.rotate(delta.asSeconds() * 200);
+	m_testEntity.rotate(delta * 200);
+
+//	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
+//	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 }
 
 void TestState::mouseMoveEvent(const sf::Event& event)
@@ -43,12 +47,12 @@ void TestState::mouseScrollEvent(const sf::Event& event)
 	}
 }
 
-void TestState::keyDownEvent(const sf::Event& event)
+void TestState::keyPressedEvent(const sf::Event& event)
 {
 	UNUSED(event);
 }
 
-void TestState::keyUpEvent(const sf::Event& event)
+void TestState::keyReleasedEvent(const sf::Event& event)
 {
 	UNUSED(event);
 }

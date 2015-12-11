@@ -2,8 +2,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include "StateCreationContext.h"
 #include "StateHandler.h"
 #include "Window.h"
+#include "IState.h"
 
 Window::Window()
 {
@@ -13,38 +15,49 @@ Window::Window()
 void Window::run()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "ld34");
+	sf::Clock deltaTimer;
 	sf::Event event;
 
 	StateHandler stateHandler(window);
 
-	sf::Clock deltaTimer;
 	while (window.isOpen())
 	{
-		const auto& delta = deltaTimer.restart();
-		IState& state = stateHandler.currentState();
-
 		while (window.pollEvent(event))
 		{
-			routeEvent(event, window, state);
+			routeEvent(event, window, stateHandler);
 		}
 
-		state.update(delta);
+		const float delta = deltaTimer
+			.restart()
+			.asSeconds();
+
+		stateHandler.update(delta);
 
 		window.clear(sf::Color::White);
-
-		window.draw(state);
-
+		window.draw(stateHandler);
 		window.display();
 	}
 }
 
-void Window::routeEvent(const sf::Event& event, sf::RenderWindow& window, IState& state)
+void Window::routeEvent(const sf::Event& event, sf::RenderWindow& window, StateHandler& stateHandler)
 {
+	IState &state = stateHandler.currentState();
+
 	switch (event.type)
 	{
 		case sf::Event::Closed:
 		{
 			return window.close();
+		}
+
+		case sf::Event::KeyPressed:
+		{
+			return state.keyPressedEvent(event);
+		}
+
+		case sf::Event::KeyReleased:
+		{
+			return state.keyReleasedEvent(event);
 		}
 
 		case sf::Event::MouseMoved:

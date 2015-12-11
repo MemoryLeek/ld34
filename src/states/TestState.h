@@ -9,18 +9,21 @@
 
 #include "tiled/Map.h"
 
+class StateHandler;
+class StateCreationContext;
+
 class TestState : public IState
 {
 	public:
-		TestState(sf::RenderWindow& window);
+		TestState(StateCreationContext &context);
 
-		void update(const sf::Time& delta) override;
+		void update(const float delta) override;
 
 		void mouseMoveEvent(const sf::Event& event) override;
 		void mouseScrollEvent(const sf::Event& event) override;
 
-		void keyDownEvent(const sf::Event& event) override;
-		void keyUpEvent(const sf::Event& event) override;
+		void keyPressedEvent(const sf::Event& event) override;
+		void keyReleasedEvent(const sf::Event& event) override;
 
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -35,10 +38,10 @@ class TestState : public IState
 		mutable sf::RenderTexture m_normalMapFbo;
 
 		Light m_mouseLight;
+		Entity m_testEntity;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;
-		Entity m_testEntity;
 
 		Tiled::Map m_map;
 };

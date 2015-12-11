@@ -7,16 +7,15 @@
 class IState : public sf::Drawable
 {
 	public:
-		virtual void update(const sf::Time& delta) = 0;
+		virtual ~IState() = default;
+
+		virtual void update(const float delta) = 0;
 
 		virtual void mouseMoveEvent(const sf::Event &event) = 0;
 		virtual void mouseScrollEvent(const sf::Event &event) = 0;
 
-		virtual void keyDownEvent(const sf::Event &event) = 0;
-		virtual void keyUpEvent(const sf::Event &event) = 0;
-
-	protected:
-		void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
+		virtual void keyPressedEvent(const sf::Event &event) = 0;
+		virtual void keyReleasedEvent(const sf::Event &event) = 0;
 };
 
 #endif // ISTATE
