@@ -7,7 +7,7 @@
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
 	, m_mouseLight(512, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
-	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal)
+	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler)
 	, m_map("maps/1.json")
 {
 	sf::View view(sf::FloatRect(0, 0, 640, 360));

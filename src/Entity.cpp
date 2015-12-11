@@ -2,11 +2,13 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "CollisionHandler.h"
 #include "Entity.h"
 
-Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture)
+Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture, const CollisionHandler &collisionHandler)
 	: m_diffuseTexture(diffuseTexture)
 	, m_normalTexture(normalTexture)
+	, m_collisionHandler(collisionHandler)
 	, m_direction(0)
 	, m_pending(0)
 	, m_remaining(0)
@@ -36,6 +38,19 @@ void Entity::update(float delta)
 	else
 	{
 		m_direction = m_pending;
+
+		const sf::Vector2f &position = getPosition();
+
+		const int x = floor(position.x / 16);
+		const int y = floor(position.y / 16);
+
+		const bool isCollidable = m_collisionHandler
+			.isCollidable(x, y + 1);
+
+		if (!isCollidable)
+		{
+			move(0, delta * 92);
+		}
 	}
 }
 

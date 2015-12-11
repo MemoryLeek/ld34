@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "CollisionHandler.h"
 #include "Entity.h"
 #include "IState.h"
 #include "Light.h"
@@ -37,6 +38,7 @@ class TestState : public IState
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
+		CollisionHandler m_collisionHandler;
 		Light m_mouseLight;
 		Entity m_testEntity;
 
