@@ -10,19 +10,24 @@ TestState::TestState(StateCreationContext &context)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal)
 	, m_map("maps/1.json")
 {
+	sf::View view(sf::FloatRect(0, 0, 640, 360));
+
+	m_window.setView(view);
+
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
-	m_testEntity.setPosition(16 * 50, 16 * 10);
+	m_testEntity.setPosition(16 * 10, 16 * 9);
 
 	m_entities.push_back(&m_testEntity);
 }
 
 void TestState::update(const float delta)
 {
-	m_testEntity.rotate(delta * 200);
+	m_testEntity.update(delta);
+//	m_testEntity.rotate(delta * 200);
 
 //	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 //	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
@@ -51,12 +56,40 @@ void TestState::mouseScrollEvent(const sf::Event& event)
 
 void TestState::keyPressedEvent(const sf::Event& event)
 {
-	UNUSED(event);
+	switch (event.key.code)
+	{
+		case sf::Keyboard::D:
+		{
+			return m_testEntity.setDirection(1);
+		}
+
+		case sf::Keyboard::A:
+		{
+			return m_testEntity.setDirection(-1);
+		}
+
+		default:
+		{
+			return;
+		}
+	}
 }
 
 void TestState::keyReleasedEvent(const sf::Event& event)
 {
-	UNUSED(event);
+	switch (event.key.code)
+	{
+		case sf::Keyboard::D:
+		case sf::Keyboard::A:
+		{
+			return m_testEntity.setDirection(0);
+		}
+
+		default:
+		{
+			return;
+		}
+	}
 }
 
 void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const

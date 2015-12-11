@@ -11,6 +11,9 @@ class Entity : public sf::Drawable, public sf::Transformable
 		Entity(const sf::Texture& diffuseTexture, const sf::Texture& normalTexture);
 
 		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
+		void update(float delta);
+
+		void setDirection(int direction);
 
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -18,7 +21,13 @@ class Entity : public sf::Drawable, public sf::Transformable
 	private:
 		const sf::Texture& m_diffuseTexture;
 		const sf::Texture& m_normalTexture;
+
 		mutable sf::Shader m_normalMapRotationShader;
+
+		int m_direction;
+		int m_pending;
+
+		float m_remaining;
 };
 
 #endif // ENTITY_H

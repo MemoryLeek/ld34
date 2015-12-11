@@ -7,6 +7,9 @@
 Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture)
 	: m_diffuseTexture(diffuseTexture)
 	, m_normalTexture(normalTexture)
+	, m_direction(0)
+	, m_pending(0)
+	, m_remaining(0)
 {
 	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
 	m_normalMapRotationShader.setParameter("texture", m_normalTexture);
@@ -21,6 +24,36 @@ void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) 
 	sprite.setRotation(getRotation());
 	sprite.setPosition(getPosition());
 	target.draw(sprite, &m_normalMapRotationShader);
+}
+
+void Entity::update(float delta)
+{
+	if ((m_remaining -= delta) > 0)
+	{
+		move(m_direction * (delta * 32), 0);
+		rotate(m_direction * (delta * 180));
+	}
+	else
+	{
+		m_direction = m_pending;
+	}
+}
+
+void Entity::setDirection(int direction)
+{
+	if (direction)
+	{
+		if (m_direction == 0)
+		{
+			m_direction = direction;
+			m_pending = direction;
+			m_remaining = 0.5f;
+		}
+	}
+	else
+	{
+		m_pending = 0;
+	}
 }
 
 void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const

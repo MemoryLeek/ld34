@@ -3,6 +3,7 @@
 
 #include "IState.h"
 
+class MenuDefinitionBuilder;
 class StateCreationContext;
 class StateHandler;
 
@@ -21,6 +22,8 @@ class MenuState : public IState
 
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+		virtual void definition(MenuDefinitionBuilder &builder) = 0;
 
 	private:
 		StateHandler &m_stateHandler;

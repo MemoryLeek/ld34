@@ -17,7 +17,11 @@ SOURCES += main.cpp \
 	states/LogoState.cpp \
 	StateHandler.cpp \
 	StateCreationContext.cpp \
-    states/MenuState.cpp
+    states/MenuState.cpp \
+    MenuDefinition.cpp \
+    MenuDefinitionBuilder.cpp \
+    states/MainMenuState.cpp \
+    MenuDefinitionEntry.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -32,7 +36,11 @@ HEADERS += \
 	StateHandler.h \
 	Util.h \
 	StateCreationContext.h \
-    states/MenuState.h
+    states/MenuState.h \
+    MenuDefinition.h \
+    MenuDefinitionBuilder.h \
+    states/MainMenuState.h \
+    MenuDefinitionEntry.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src
