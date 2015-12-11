@@ -15,7 +15,6 @@ Window::Window()
 void Window::run()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "ld34");
-//	window.setVerticalSyncEnabled(true);
 
 	sf::Clock deltaTimer;
 	sf::Event event;

@@ -82,8 +82,24 @@ Map::Map(const std::string &filename)
 			}
 
 			m_layers.push_back(Layer(layerSize, tileArray, m_tilesets));
+
+			const bool layerHasProperties = layer.find("properties") != layer.end();
+			if (layerHasProperties)
+			{
+				const auto& layerProperties = layer.find("properties").value();
+				for (auto it = layerProperties.begin(); it != layerProperties.end(); it++)
+				{
+					const bool propertyIsTrue = it.value() == "true";
+					m_layers.back().setProperty(it.key(), propertyIsTrue);
+				}
+			}
 		}
 	}
+}
+
+const std::vector<Layer>& Map::layers() const
+{
+	return m_layers;
 }
 
 void Map::drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const

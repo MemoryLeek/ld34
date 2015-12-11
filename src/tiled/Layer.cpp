@@ -1,3 +1,4 @@
+#include <iostream>
 #include <set>
 
 #include <SFML/Graphics/VertexArray.hpp>
@@ -8,7 +9,9 @@
 using namespace Tiled;
 
 Layer::Layer(const sf::Vector2u &size, const std::vector<int> &tileData, const std::vector<Tileset> &tilesets)
-	: m_tilesets(tilesets)
+	: m_size(size)
+	, m_tileData(tileData)
+	, m_tilesets(tilesets)
 {
 	// When drawing a layer we want to to as few texture switches as possible
 	// to get highest performance, to do this we keep separate vertex arrays for
@@ -79,6 +82,28 @@ void Layer::drawNormalsTo(sf::RenderTarget &target, sf::RenderStates states) con
 
 		i++;
 	}
+}
+
+bool Layer::property(const std::string &name) const
+{
+	const auto& property = m_properties.find(name);
+	if (property != m_properties.end())
+	{
+		return property->second;
+	}
+
+	return false;
+}
+
+Layer& Layer::setProperty(const std::string &name, bool isSet)
+{
+	m_properties[name] = isSet;
+	return *this;
+}
+
+bool Layer::hasTileAt(int x, int y) const
+{
+	return m_tileData[x + 1 + y * m_size.x] > 0;
 }
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const

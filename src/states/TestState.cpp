@@ -9,6 +9,7 @@ TestState::TestState(StateCreationContext &context)
 	, m_mouseLight(512, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler)
 	, m_map("maps/1.json")
+	, m_collisionHandler(m_map)
 {
 	sf::View view(sf::FloatRect(0, 0, 640, 360));
 
@@ -27,10 +28,6 @@ TestState::TestState(StateCreationContext &context)
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
-//	m_testEntity.rotate(delta * 200);
-
-//	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
-//	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 }
 
 void TestState::mouseMoveEvent(const sf::Event& event)

@@ -1,15 +1,24 @@
+#include <iostream>
+
 #include "CollisionHandler.h"
 #include "Util.h"
+#include "tiled/Map.h"
 
-CollisionHandler::CollisionHandler()
+CollisionHandler::CollisionHandler(const Tiled::Map &map)
+	: m_map(map)
 {
-
 }
 
 bool CollisionHandler::isCollidable(int x, int y) const
 {
-	UNUSED(x);
+	for (const auto& layer : m_map.layers())
+	{
+		if (layer.property("collidable") && layer.hasTileAt(x, y))
+		{
+			return true;
+		}
+	}
 
-	return (x < 15 && y > 10) || y > 15;
+	return false;
 }
 

@@ -38,7 +38,6 @@ class TestState : public IState
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
-		CollisionHandler m_collisionHandler;
 		Light m_mouseLight;
 		Entity m_testEntity;
 
@@ -48,6 +47,7 @@ class TestState : public IState
 		sf::Texture m_testEntityNormal;
 
 		Tiled::Map m_map;
+		CollisionHandler m_collisionHandler;
 };
 
 #endif // TESTSTATE_H

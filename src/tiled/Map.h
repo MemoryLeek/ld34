@@ -15,6 +15,8 @@ namespace Tiled
 		public:
 			Map(const std::string& filename);
 
+			const std::vector<Layer>& layers() const;
+
 			void drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
 
 		protected:
