@@ -8,10 +8,12 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
+#include "Entity.h"
+
 class Light : public sf::Drawable, public sf::Transformable
 {
 	public:
-		Light(float radius, const sf::Texture& screenSpaceNormalMap, const sf::Color& color = sf::Color::White);
+		Light(float radius, const sf::Texture& screenSpaceNormalMap, const std::vector<Entity*>& shadowCastingEntities, const sf::Color& color = sf::Color::White);
 
 		float height() const;
 		Light& setHeight(float height);
@@ -22,6 +24,7 @@ class Light : public sf::Drawable, public sf::Transformable
 	private:
 		const float m_radius;
 		const sf::Texture& m_screenSpaceNormalMap;
+		const std::vector<Entity*>& m_shadowCastingEntities;
 		sf::Color m_color;
 		float m_height;
 

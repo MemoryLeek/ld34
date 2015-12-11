@@ -5,6 +5,7 @@ uniform vec2 resolution;
 
 void main(void)
 {
+	bool hasHitWall = false;
 	float distance = 1.0;
 
 	for (float y= 0.0; y < resolution.y; y += 1.0)
@@ -15,7 +16,11 @@ void main(void)
 
 		vec2 occlusionMapCoords = vec2(-r * sin(theta), -r * cos(theta)) / 2.0 + 0.5;
 		vec4 data = texture2D(texture, occlusionMapCoords);
-		if(data.a > 0.)
+		if(!hasHitWall && data.a > 0.)
+		{
+			hasHitWall = true;
+		}
+		if(hasHitWall && data.a == 0.)
 		{
 			distance = min(distance, y / resolution.y);
 			break;

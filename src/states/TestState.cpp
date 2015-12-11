@@ -6,7 +6,7 @@
 
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
-	, m_mouseLight(512, m_normalMapFbo.getTexture(), sf::Color::White)
+	, m_mouseLight(512, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal)
 	, m_map("maps/1.json")
 {
@@ -16,6 +16,8 @@ TestState::TestState(StateCreationContext &context)
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
 	m_testEntity.setPosition(16 * 50, 16 * 10);
+
+	m_entities.push_back(&m_testEntity);
 }
 
 void TestState::update(const float delta)
@@ -59,15 +61,21 @@ void TestState::keyReleasedEvent(const sf::Event& event)
 
 void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-		// Step 0 - Draw the map normals to the normal map FBO
+	// Step 0 - Draw the map normals to the normal map FBO
 	m_normalMapFbo.clear(sf::Color(127, 127, 255)); // Make the empty background face us
 	m_map.drawBackgroundNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
-	m_testEntity.drawNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
+	for (const auto* entity : m_entities)
+	{
+		entity->drawNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
+	}
 	m_normalMapFbo.display();
 
 	// Step 1 - Draw everything that should receive light
 	target.draw(m_map);
-	target.draw(m_testEntity);
+	for (const auto* entity : m_entities)
+	{
+		target.draw(*entity);
+	}
 
 	// Step 2 - Draw all lights to the light buffer
 	m_lightBuffer.clear(sf::Color(100, 100, 100)); // Ambient color

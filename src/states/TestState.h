@@ -40,6 +40,8 @@ class TestState : public IState
 		Light m_mouseLight;
 		Entity m_testEntity;
 
+		std::vector<Entity*> m_entities;
+
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;
 

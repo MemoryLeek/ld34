@@ -4,9 +4,10 @@
 
 #include "Light.h"
 
-Light::Light(float radius, const sf::Texture &screenSpaceNormalMap, const sf::Color &color)
+Light::Light(float radius, const sf::Texture &screenSpaceNormalMap, const std::vector<Entity *> &shadowCastingEntities, const sf::Color &color)
 	: m_radius(radius)
 	, m_screenSpaceNormalMap(screenSpaceNormalMap)
+	, m_shadowCastingEntities(shadowCastingEntities)
 	, m_color(color)
 	, m_height(.1f)
 {
@@ -81,10 +82,10 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Create an occlusion map with all objects that cast shadows
 	m_occlusionMap.setView(lightView);
 	m_occlusionMap.clear(sf::Color::Transparent);
-//	for (const auto& occluder : m_occluders)
-//	{
-//		m_occlusionMap.draw(*occluder);
-//	}
+	for (const auto* occluder : m_shadowCastingEntities)
+	{
+		m_occlusionMap.draw(*occluder);
+	}
 	m_occlusionMap.display();
 
 	// Create a shadow map from our occlusion map
