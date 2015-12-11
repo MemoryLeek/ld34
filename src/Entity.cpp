@@ -4,6 +4,7 @@
 
 #include "CollisionHandler.h"
 #include "Entity.h"
+#include "Util.h"
 
 Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture, const CollisionHandler &collisionHandler)
 	: m_diffuseTexture(diffuseTexture)
@@ -24,7 +25,7 @@ void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) 
 	sf::Sprite sprite(m_normalTexture);
 	sprite.setOrigin(sf::Vector2f(m_normalTexture.getSize()) / 2.f);
 	sprite.setRotation(getRotation());
-	sprite.setPosition(getPosition());
+	sprite.setPosition(getPosition() + Offset);
 	target.draw(sprite, &m_normalMapRotationShader);
 }
 
@@ -73,10 +74,12 @@ void Entity::setDirection(int direction)
 
 void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+	UNUSED(states);
+
 	sf::Sprite sprite(m_diffuseTexture);
 	sprite.setOrigin(sf::Vector2f(m_diffuseTexture.getSize()) / 2.f);
 	sprite.setRotation(getRotation());
-	sprite.setPosition(getPosition());
+	sprite.setPosition(getPosition() + Offset);
 	target.draw(sprite);
 }
 

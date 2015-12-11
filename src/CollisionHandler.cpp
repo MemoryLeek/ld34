@@ -10,6 +10,6 @@ bool CollisionHandler::isCollidable(int x, int y) const
 {
 	UNUSED(x);
 
-	return y > 15;
+	return (x < 15 && y > 10) || y > 15;
 }
 
