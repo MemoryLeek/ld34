@@ -117,6 +117,28 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 						}
 					}
 				}
+				else if (layerName == "triggers")
+				{
+					const auto& triggers = layer.find("objects").value();
+					if (triggers.is_null())
+					{
+						std::cout << "No triggers" << std::endl;
+					}
+					else
+					{
+						std::cout << "Loading " << triggers.size() << " trigger(s)." << std::endl;
+						for (const auto& trigger : triggers)
+						{
+							const auto& x = trigger.find("x").value();
+							const auto& y = trigger.find("y").value();
+							const auto& width = trigger.find("width").value().get<int>();
+							const auto& height = trigger.find("height").value().get<int>();
+							const auto& name = trigger.find("name").value();
+							const auto& type = trigger.find("type").value();
+							m_triggerAreas.push_back(Trigger(name, type, x, y, width, height));
+						}
+					}
+				}
 			}
 			else // tilelayer
 			{
@@ -162,6 +184,11 @@ const std::vector<std::unique_ptr<Light> > &Map::lights() const
 const std::vector<sf::Vector2i> &Map::spawnPoints() const
 {
 	return m_spawnPoints;
+}
+
+const std::vector<Trigger> &Map::triggerAreas() const
+{
+	return m_triggerAreas;
 }
 
 void Map::drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const

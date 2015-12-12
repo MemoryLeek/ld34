@@ -74,6 +74,11 @@ void Entity::update(float delta)
 			move(0, delta * 184);
 		}
 	}
+
+	if (m_collisionHandler.getTriggers(getPosition()).size() > 0)
+	{
+//		std::cout << "Inside triggers" << std::endl;
+	}
 }
 
 void Entity::execute()
