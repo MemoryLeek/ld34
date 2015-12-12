@@ -42,7 +42,7 @@ void TestState::update(const float delta)
 	m_turnHandler.update(delta);
 	m_testWorm.update(delta);
 
-	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));
+	m_view.setCenter(m_window.getSize().x / 2, m_testEntity.getPosition().y + 32 * 10);
 
 	m_fpsTimer += delta;
 }
