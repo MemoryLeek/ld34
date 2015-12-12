@@ -4,15 +4,15 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "ITextureProvider.h"
 #include "CollisionHandler.h"
 #include "EntityCreationContext.h"
 #include "Entity.h"
 #include "EntityManager.h"
 #include "Util.h"
 
-Entity::Entity(const EntityCreationContext &context)
-	: m_diffuseTexture(context.m_diffuseTexture)
-	, m_normalTexture(context.m_normalTexture)
+Entity::Entity(ITextureProvider &textureProvider, const EntityCreationContext &context)
+	: m_textureProvider(textureProvider)
 	, m_collisionHandler(context.m_collisionHandler)
 	, m_entityManager(context.m_entityManager)
 	, m_direction(0)
@@ -21,8 +21,10 @@ Entity::Entity(const EntityCreationContext &context)
 {
 	m_entityManager.add(this);
 
+	const auto &normalTexture = m_textureProvider.normalTexture();
+
 	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
-	m_normalMapRotationShader.setParameter("texture", m_normalTexture);
+	m_normalMapRotationShader.setParameter("texture", normalTexture);
 }
 
 Entity::~Entity()
@@ -34,8 +36,10 @@ void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) 
 {
 	m_normalMapRotationShader.setParameter("rotation", (getRotation() * M_PI / 180));
 
-	sf::Sprite sprite(m_normalTexture);
-	sprite.setOrigin(sf::Vector2f(m_normalTexture.getSize()) / 2.f);
+	const auto &normalTexture = m_textureProvider.normalTexture();
+
+	sf::Sprite sprite(normalTexture);
+	sprite.setOrigin(sf::Vector2f(normalTexture.getSize()) / 2.f);
 	sprite.setRotation(getRotation());
 	sprite.setPosition(getPosition() + Offset);
 	target.draw(sprite, &m_normalMapRotationShader);
@@ -104,8 +108,10 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
-	sf::Sprite sprite(m_diffuseTexture);
-	sprite.setOrigin(sf::Vector2f(m_diffuseTexture.getSize()) / 2.f);
+	const auto &diffuseTexture = m_textureProvider.diffuseTexture();
+
+	sf::Sprite sprite(diffuseTexture);
+	sprite.setOrigin(sf::Vector2f(diffuseTexture.getSize()) / 2.f);
 	sprite.setRotation(getRotation());
 	sprite.setPosition(getPosition() + Offset);
 	target.draw(sprite);

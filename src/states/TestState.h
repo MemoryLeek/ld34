@@ -10,6 +10,8 @@
 #include "IState.h"
 #include "Light.h"
 #include "TurnHandler.h"
+#include "Enemy.h"
+#include "ITextureProvider.h"
 
 #include "tiled/Map.h"
 
@@ -42,9 +44,13 @@ class TestState : public IState
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
+		PlayerCharacterTextureProvider m_playerCharacterTextureProvider;
+		EnemyTextureProvider m_enemyTextureProvider;
+
 		EntityManager m_entityManager;
 		EntityCreationContext m_entityCreationContext;
 		PlayerCharacter m_testEntity;
+		Enemy m_enemy;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;

@@ -1,7 +1,7 @@
 #include "PlayerCharacter.h"
 
-PlayerCharacter::PlayerCharacter(const EntityCreationContext &context)
-	: Entity(context)
+PlayerCharacter::PlayerCharacter(ITextureProvider &textureProvider, const EntityCreationContext &context)
+	: Entity(textureProvider, context)
 {
 
 }

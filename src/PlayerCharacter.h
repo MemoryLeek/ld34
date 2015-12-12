@@ -6,7 +6,7 @@
 class PlayerCharacter : public Entity
 {
 	public:
-		PlayerCharacter(const EntityCreationContext &context);
+		PlayerCharacter(ITextureProvider &textureProvider, const EntityCreationContext &context);
 };
 
 #endif // PLAYERCHARACTER_H

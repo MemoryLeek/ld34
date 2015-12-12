@@ -10,7 +10,8 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
-	, m_testEntity(m_entityCreationContext)
+	, m_testEntity(m_playerCharacterTextureProvider, m_entityCreationContext)
+	, m_enemy(m_enemyTextureProvider, m_entityCreationContext)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
@@ -29,6 +30,7 @@ TestState::TestState(StateCreationContext &context)
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
+	m_enemy.update(delta);
 
 	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));
 

@@ -6,7 +6,7 @@
 class Enemy : public Entity
 {
 	public:
-		Enemy(const EntityCreationContext &context);
+		Enemy(ITextureProvider &textureProvider, const EntityCreationContext &context);
 };
 
 #endif // ENEMY_H

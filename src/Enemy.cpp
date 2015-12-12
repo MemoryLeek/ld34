@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
-Enemy::Enemy(const EntityCreationContext &context)
-	: Entity(context)
+Enemy::Enemy(ITextureProvider &textureProvider, const EntityCreationContext &context)
+	: Entity(textureProvider, context)
 {
 
 }

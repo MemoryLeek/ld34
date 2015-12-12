@@ -8,13 +8,14 @@
 class CollisionHandler;
 class EntityCreationContext;
 class EntityManager;
+class ITextureProvider;
 
 class Entity : public sf::Drawable, public sf::Transformable
 {
 	const sf::Vector2f Offset = sf::Vector2f(16, 12);
 
 	public:
-		Entity(const EntityCreationContext &context);
+		Entity(ITextureProvider &textureProvider, const EntityCreationContext &context);
 		~Entity();
 
 		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -29,9 +30,7 @@ class Entity : public sf::Drawable, public sf::Transformable
 		bool isCollidable(int tx, int ty) const;
 
 	private:
-		const sf::Texture& m_diffuseTexture;
-		const sf::Texture& m_normalTexture;
-
+		ITextureProvider &m_textureProvider;
 		CollisionHandler &m_collisionHandler;
 		EntityManager &m_entityManager;
 
