@@ -10,10 +10,15 @@
 
 #include "Entity.h"
 
+namespace Tiled
+{
+	class Map;
+}
+
 class Light : public sf::Drawable, public sf::Transformable
 {
 	public:
-		Light(float radius, const sf::Texture& screenSpaceNormalMap, const std::vector<Entity*>& shadowCastingEntities, const sf::Color& color = sf::Color::White);
+		Light(float radius, const Tiled::Map& map, const sf::Texture& screenSpaceNormalMap, const std::vector<Entity*>& shadowCastingEntities, const sf::Color& color = sf::Color::White);
 
 		float height() const;
 		Light& setHeight(float height);
@@ -23,6 +28,7 @@ class Light : public sf::Drawable, public sf::Transformable
 
 	private:
 		const float m_radius;
+		const Tiled::Map& m_map;
 		const sf::Texture& m_screenSpaceNormalMap;
 		const std::vector<Entity*>& m_shadowCastingEntities;
 		sf::Color m_color;

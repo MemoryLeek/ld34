@@ -12,7 +12,7 @@ void main(void)
 	vec2 norm = gl_TexCoord[0].st * 2.0 - 1.0;
 	float theta = atan(norm.y, norm.x);
 
-	float r = length(norm) + 0.005;
+	float r = length(norm) - 0.003;
 	float coord = (theta + PI) / (2.0 * PI);
 	vec2 shadowMapTextureCoords = vec2(coord, 0.0);
 

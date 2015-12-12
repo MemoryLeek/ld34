@@ -6,9 +6,9 @@
 
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
-	, m_mouseLight(512, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler)
 	, m_map("maps/1.json")
+	, m_mouseLight(512, m_map, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
 	, m_collisionHandler(m_map)
 {
 //	sf::View view(sf::FloatRect(0, 0, 640, 360));
@@ -101,10 +101,12 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	m_normalMapFbo.display();
 
 	// Step 1 - Draw everything that should receive light
-	target.draw(m_map);
-	for (const auto* entity : m_entities)
+	for (const auto& layer : m_map.layers())
 	{
-		target.draw(*entity);
+		if (!layer.property("castShadows"))
+		{
+			target.draw(layer);
+		}
 	}
 
 	// Step 2 - Draw all lights to the light buffer
@@ -118,5 +120,16 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.draw(lightMapSprite, sf::BlendMultiply);
 
 	// Step 4 - Draw everything that doesn't receive light
+	for (const auto& layer : m_map.layers())
+	{
+		if (layer.property("castShadows"))
+		{
+			target.draw(layer);
+		}
+	}
+	for (const auto* entity : m_entities)
+	{
+		target.draw(*entity);
+	}
 }
 

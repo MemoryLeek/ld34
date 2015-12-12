@@ -3,9 +3,11 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "Light.h"
+#include "tiled/Map.h"
 
-Light::Light(float radius, const sf::Texture &screenSpaceNormalMap, const std::vector<Entity *> &shadowCastingEntities, const sf::Color &color)
+Light::Light(float radius, const Tiled::Map& map, const sf::Texture &screenSpaceNormalMap, const std::vector<Entity *> &shadowCastingEntities, const sf::Color &color)
 	: m_radius(radius)
+	, m_map(map)
 	, m_screenSpaceNormalMap(screenSpaceNormalMap)
 	, m_shadowCastingEntities(shadowCastingEntities)
 	, m_color(color)
@@ -82,6 +84,13 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Create an occlusion map with all objects that cast shadows
 	m_occlusionMap.setView(lightView);
 	m_occlusionMap.clear(sf::Color::Transparent);
+	for (const auto& layer : m_map.layers())
+	{
+		if (layer.property("castShadows"))
+		{
+			m_occlusionMap.draw(layer);
+		}
+	}
 	for (const auto* occluder : m_shadowCastingEntities)
 	{
 		m_occlusionMap.draw(*occluder);
