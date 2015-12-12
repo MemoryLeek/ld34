@@ -92,6 +92,14 @@ bool Entity::turnEnd(const float delta)
 
 		setPosition(rx * 32, ry * 32);
 
+		for (const auto& entity : m_entityManager.entities())
+		{
+			if (entity != this && entity->getPosition() == getPosition())
+			{
+				std::cout << "Inside entity, kill it with fire" << std::endl;
+			}
+		}
+
 		return true;
 	}
 	else
