@@ -15,6 +15,7 @@ Window::Window()
 void Window::run()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "ld34");
+	window.setKeyRepeatEnabled(false);
 
 	sf::Clock deltaTimer;
 	sf::Event event;

@@ -2,16 +2,30 @@
 #define TURNHANDLER_H
 
 class EntityManager;
+class ITurn;
+
+using Function = void (ITurn::*)(const float);
 
 class TurnHandler
 {
+	const float TURN_LENGTH = 0.25f;
+
 	public:
 		TurnHandler(EntityManager &entityManager);
 
+		void update(const float delta);
 		void execute();
 
+		bool isRunning() const;
+
 	private:
+		float getRemainingDelta(const float delta) const;
+
+		void raiseEvent(Function function, const float delta);
+
 		EntityManager &m_entityManager;
+
+		float m_remaining;
 };
 
 #endif // TURNHANDLER_H

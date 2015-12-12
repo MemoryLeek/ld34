@@ -60,7 +60,8 @@ HEADERS += \
     EntityCreationContext.h \
     ITextureProvider.h \
     AnimatedSprite.h \
-    tiled/Trigger.h
+	tiled/Trigger.h \
+    ITurn.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

@@ -3,10 +3,18 @@
 
 #include "Entity.h"
 
+class PlayerCharacter;
+
 class Enemy : public Entity
 {
 	public:
-		Enemy(ITextureProvider &textureProvider, const EntityCreationContext &context);
+		Enemy(ITextureProvider &textureProvider, PlayerCharacter &player, const EntityCreationContext &context);
+
+	private:
+		void turnStart(const float delta) override;
+		void handleMove(const float delta, const int direction) override;
+
+		PlayerCharacter &m_player;
 };
 
 #endif // ENEMY_H

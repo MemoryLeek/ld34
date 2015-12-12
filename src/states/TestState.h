@@ -51,7 +51,6 @@ class TestState : public IState
 		EntityManager m_entityManager;
 		EntityCreationContext m_entityCreationContext;
 		PlayerCharacter m_testEntity;
-		std::vector<std::unique_ptr<Enemy>> m_enemies;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;

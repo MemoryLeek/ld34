@@ -32,19 +32,14 @@ TestState::TestState(StateCreationContext &context)
 
 	for (const auto& spawnPoint : m_map.spawnPoints())
 	{
-		std::unique_ptr<Enemy> enemy(new Enemy(m_enemyTextureProvider, m_entityCreationContext));
+		Enemy *enemy = new Enemy(m_enemyTextureProvider, m_testEntity, m_entityCreationContext);
 		enemy->setPosition(sf::Vector2f(spawnPoint));
-		m_enemies.push_back(std::move(enemy));
 	}
 }
 
 void TestState::update(const float delta)
 {
-	m_testEntity.update(delta);
-	for (auto& enemy : m_enemies)
-	{
-		enemy->update(delta);
-	}
+	m_turnHandler.update(delta);
 	m_testWorm.update(delta);
 
 	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));
@@ -79,16 +74,22 @@ void TestState::keyPressedEvent(const sf::Event& event)
 	{
 		case sf::Keyboard::D:
 		{
-			m_testEntity.setDirection(1);
-			m_turnHandler.execute();
+			if (!m_turnHandler.isRunning())
+			{
+				m_testEntity.setDirection(1);
+				m_turnHandler.execute();
+			}
 
 			return;
 		}
 
 		case sf::Keyboard::A:
 		{
-			m_testEntity.setDirection(-1);
-			m_turnHandler.execute();
+			if (!m_turnHandler.isRunning())
+			{
+				m_testEntity.setDirection(-1);
+				m_turnHandler.execute();
+			}
 
 			return;
 		}
@@ -102,19 +103,7 @@ void TestState::keyPressedEvent(const sf::Event& event)
 
 void TestState::keyReleasedEvent(const sf::Event& event)
 {
-	switch (event.key.code)
-	{
-		case sf::Keyboard::D:
-		case sf::Keyboard::A:
-		{
-			return m_testEntity.setDirection(0);
-		}
-
-		default:
-		{
-			return;
-		}
-	}
+	UNUSED(event);
 }
 
 void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const

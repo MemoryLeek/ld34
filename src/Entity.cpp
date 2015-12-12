@@ -16,8 +16,6 @@ Entity::Entity(ITextureProvider &textureProvider, const EntityCreationContext &c
 	, m_collisionHandler(context.m_collisionHandler)
 	, m_entityManager(context.m_entityManager)
 	, m_direction(0)
-	, m_pending(0)
-	, m_remaining(0)
 {
 	m_entityManager.add(this);
 
@@ -45,67 +43,17 @@ void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) 
 	target.draw(sprite, &m_normalMapRotationShader);
 }
 
-void Entity::update(float delta)
+void Entity::setDirection(int direction)
 {
-	if (m_remaining > 0)
+	if (isCollidable(0, 1) && !
+		isCollidable(direction, 0))
 	{
-		const auto remainingDelta = (m_remaining - delta < 0) ? m_remaining : delta;
-
-		move(m_direction * (remainingDelta * 128), 0);
-		rotate(m_direction * (remainingDelta * 360));
-
-		m_remaining -= delta;
-	}
-	else
-	{
-		m_direction = m_pending;
-
-		if (isCollidable(0, 1))
-		{
-			const auto &position = getPosition();
-			const auto rx = round(position.x / 32.0f);
-			const auto ry = round(position.y / 32.0f);
-
-			setPosition(rx * 32, position.y);
-			setPosition(rx * 32, ry * 32);
-		}
-		else
-		{
-			move(0, delta * 184);
-		}
+		m_direction = direction;
 	}
 
 	if (m_collisionHandler.getTriggers(getPosition()).size() > 0)
 	{
 //		std::cout << "Inside triggers" << std::endl;
-	}
-}
-
-void Entity::execute()
-{
-	if (!m_direction)
-	{
-		m_direction = m_pending;
-	}
-}
-
-void Entity::setDirection(int direction)
-{
-	if (direction)
-	{
-		if (isCollidable(0, 1) &&
-			isCollidable(direction, 0) == false)
-		{
-			if (!m_direction)
-			{
-				m_pending = direction;
-				m_remaining = 0.25f;
-			}
-		}
-	}
-	else
-	{
-		m_pending = 0;
 	}
 }
 
@@ -122,12 +70,42 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.draw(sprite);
 }
 
+void Entity::turnProgress(const float delta)
+{
+	if (m_direction)
+	{
+		handleMove(delta, m_direction);
+	}
+	else
+	{
+		turnIdle(delta);
+	}
+}
+
+void Entity::turnIdle(const float delta)
+{
+	m_direction = 0;
+
+	if (isCollidable(0, 1))
+	{
+		const auto &position = getPosition();
+		const auto rx = round(position.x / 32.0f);
+		const auto ry = round(position.y / 32.0f);
+
+		setPosition(rx * 32, position.y);
+		setPosition(rx * 32, ry * 32);
+	}
+	else
+	{
+		move(0, delta * 184);
+	}
+}
+
 bool Entity::isCollidable(int tx, int ty) const
 {
-	const sf::Vector2f &position = getPosition();
-
-	const int x = floor(position.x / 32);
-	const int y = floor(position.y / 32);
+	const auto &position = getPosition();
+	const auto x = floor(position.x / 32);
+	const auto y = floor(position.y / 32);
 
 	return m_collisionHandler.isCollidable(x + tx , y + ty);
 }
