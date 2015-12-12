@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "AnimatedSprite.h"
 #include "CollisionHandler.h"
 #include "PlayerCharacter.h"
 #include "EntityManager.h"
@@ -54,6 +55,9 @@ class TestState : public IState
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;
+
+		sf::Texture m_wormAnimationStrip;
+		AnimatedSprite m_testWorm;
 
 		Tiled::Map m_map;
 		LightContext m_lightContext;

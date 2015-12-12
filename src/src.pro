@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     Enemy.cpp \
     PlayerCharacter.cpp \
     EntityCreationContext.cpp \
-    ITextureProvider.cpp
+    ITextureProvider.cpp \
+    AnimatedSprite.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -56,7 +57,8 @@ HEADERS += \
     Enemy.h \
     PlayerCharacter.h \
     EntityCreationContext.h \
-    ITextureProvider.h
+    ITextureProvider.h \
+    AnimatedSprite.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "AnimatedSprite.h"
 #include "StateCreationContext.h"
 #include "TestState.h"
 #include "Util.h"
@@ -25,12 +26,17 @@ TestState::TestState(StateCreationContext &context)
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
 	m_testEntity.setPosition(16 * 10, 0);
+
+	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
+	m_testWorm = AnimatedSprite(m_wormAnimationStrip, 9 * 2);
+	m_testWorm.setPosition(32 * 10, 32 * 10);
 }
 
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
 	m_enemy.update(delta);
+	m_testWorm.update(delta);
 
 	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));
 
@@ -158,6 +164,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
 		target.draw(*entity);
 	}
+	target.draw(m_testWorm);
 
 	m_fpsCounter++;
 	if (m_fpsTimer >= 1)
