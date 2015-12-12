@@ -3,19 +3,17 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+class AnimatedSpriteState;
+
 class AnimatedSprite : public sf::Sprite
 {
 	public:
-		AnimatedSprite(const sf::Texture& texture, int frameRate, int &currentFrame);
+		AnimatedSprite(const sf::Texture& texture, AnimatedSpriteState &state);
 
 		void update(float delta);
 
 	private:
-		float m_timePerFrame;
-		int& m_currentFrame;
-		int m_numberOfFrames;
-
-		float m_timeSinceLastFrameChange;
+		AnimatedSpriteState &m_state;
 
 };
 

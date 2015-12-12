@@ -13,12 +13,15 @@
 
 Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
 	: m_texture(texture)
+	, m_animatedSpriteState(36)
 	, m_collisionHandler(context.m_collisionHandler)
 	, m_entityManager(context.m_entityManager)
-	, m_currentFrame(0)
 	, m_direction(0)
+	, m_dead(false)
+	, m_deathTimer(0)
 {
 	m_entityManager.add(this);
+	m_animatedSpriteState.setSegment(0, 9);
 }
 
 Entity::~Entity()
@@ -53,9 +56,9 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
-	int currentFrame = m_currentFrame;
+	auto animatedSpriteState = m_animatedSpriteState;
 
-	AnimatedSprite sprite(m_texture, 36, currentFrame);
+	AnimatedSprite sprite(m_texture, animatedSpriteState);
 	sprite.setOrigin(sf::Vector2f(32, 32) / 2.f);
 	sprite.setRotation(getRotation());
 	sprite.setPosition(getPosition() + Offset);
@@ -66,6 +69,13 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		sprite.setScale(-m_direction, 1);
 	}
 
+	if (m_dead)
+	{
+		const float alpha = std::max(0.0f, (1.0f - (m_deathTimer / 0.5f))) * 255;
+
+		sprite.setColor(sf::Color(255, 255, 255, alpha));
+	}
+
 	target.draw(sprite);
 }
 
@@ -73,7 +83,7 @@ bool Entity::turnProgress(const float delta)
 {
 	if (m_direction)
 	{
-		AnimatedSprite sprite(m_texture, 36, m_currentFrame);
+		AnimatedSprite sprite(m_texture, m_animatedSpriteState);
 		sprite.update(delta);
 
 		handleMove(delta, m_direction);
@@ -84,6 +94,20 @@ bool Entity::turnProgress(const float delta)
 
 bool Entity::turnEnd(const float delta)
 {
+	if (m_dead)
+	{
+		move(0, -delta * 184);
+
+		if ((m_deathTimer += delta) > 0.8f)
+		{
+			delete this;
+
+			return true;
+		}
+
+		return false;
+	}
+
 	if (isCollidable(0, 1))
 	{
 		const auto &position = getPosition();
@@ -92,11 +116,11 @@ bool Entity::turnEnd(const float delta)
 
 		setPosition(rx * 32, ry * 32);
 
-		for (const auto& entity : m_entityManager.entities())
+		for (Entity *entity : m_entityManager.entities())
 		{
 			if (entity != this && entity->getPosition() == getPosition())
 			{
-				std::cout << "Inside entity, kill it with fire" << std::endl;
+				entity->kill();
 			}
 		}
 
@@ -108,6 +132,12 @@ bool Entity::turnEnd(const float delta)
 	}
 
 	return false;
+}
+
+void Entity::kill()
+{
+	m_animatedSpriteState.setSegment(10, 16);
+	m_dead = true;
 }
 
 bool Entity::isCollidable(int tx, int ty) const
