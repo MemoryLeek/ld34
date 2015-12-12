@@ -99,6 +99,24 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 						}
 					}
 				}
+				else if (layerName == "spawns")
+				{
+					const auto& spawns = layer.find("objects").value();
+					if (spawns.is_null())
+					{
+						std::cout << "No spawns" << std::endl;
+					}
+					else
+					{
+						std::cout << "Loading " << spawns.size() << " spawn(s)." << std::endl;
+						for (const auto& spawn : spawns)
+						{
+							const auto& x = spawn.find("x").value();
+							const auto& y = spawn.find("y").value();
+							m_spawnPoints.push_back(sf::Vector2i(x, y));
+						}
+					}
+				}
 			}
 			else // tilelayer
 			{
@@ -139,6 +157,11 @@ const std::vector<Layer>& Map::layers() const
 const std::vector<std::unique_ptr<Light> > &Map::lights() const
 {
 	return m_lights;
+}
+
+const std::vector<sf::Vector2i> &Map::spawnPoints() const
+{
+	return m_spawnPoints;
 }
 
 void Map::drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const

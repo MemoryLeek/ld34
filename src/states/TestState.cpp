@@ -12,7 +12,6 @@ TestState::TestState(StateCreationContext &context)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
 	, m_testEntity(m_playerCharacterTextureProvider, m_entityCreationContext)
-	, m_enemy(m_enemyTextureProvider, m_entityCreationContext)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
@@ -30,12 +29,22 @@ TestState::TestState(StateCreationContext &context)
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
 	m_testWorm = AnimatedSprite(m_wormAnimationStrip, 9 * 2);
 	m_testWorm.setPosition(32 * 10, 32 * 10);
+
+	for (const auto& spawnPoint : m_map.spawnPoints())
+	{
+		std::unique_ptr<Enemy> enemy(new Enemy(m_enemyTextureProvider, m_entityCreationContext));
+		enemy->setPosition(sf::Vector2f(spawnPoint));
+		m_enemies.push_back(std::move(enemy));
+	}
 }
 
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
-	m_enemy.update(delta);
+	for (auto& enemy : m_enemies)
+	{
+		enemy->update(delta);
+	}
 	m_testWorm.update(delta);
 
 	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));

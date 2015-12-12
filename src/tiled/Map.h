@@ -19,6 +19,8 @@ namespace Tiled
 
 			const std::vector<Layer>& layers() const;
 			const std::vector<std::unique_ptr<Light>>& lights() const;
+			const std::vector<sf::Vector2i>& spawnPoints() const;
+
 
 			void drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -29,6 +31,7 @@ namespace Tiled
 			std::vector<Tileset> m_tilesets;
 			std::vector<Layer> m_layers;
 			std::vector<std::unique_ptr<Light>> m_lights;
+			std::vector<sf::Vector2i> m_spawnPoints;
 	};
 }
 
