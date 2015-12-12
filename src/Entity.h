@@ -23,7 +23,7 @@ class Entity : public sf::Drawable, public sf::Transformable
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 	private:
-		bool isOnGround() const;
+		bool isCollidable(int tx, int ty) const;
 
 		const sf::Texture& m_diffuseTexture;
 		const sf::Texture& m_normalTexture;

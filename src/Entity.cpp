@@ -40,7 +40,7 @@ void Entity::update(float delta)
 	{
 		m_direction = m_pending;
 
-		if (!isOnGround())
+		if (!isCollidable(0, 1))
 		{
 			move(0, delta * 92);
 		}
@@ -51,11 +51,15 @@ void Entity::setDirection(int direction)
 {
 	if (direction)
 	{
-		if (isOnGround() && !m_direction)
+		if (isCollidable(0, 1) &&
+			isCollidable(direction, 0) == false)
 		{
-			m_direction = direction;
-			m_pending = direction;
-			m_remaining = 0.5f;
+			if (!m_direction)
+			{
+				m_direction = direction;
+				m_pending = direction;
+				m_remaining = 0.5f;
+			}
 		}
 	}
 	else
@@ -75,13 +79,13 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.draw(sprite);
 }
 
-bool Entity::isOnGround() const
+bool Entity::isCollidable(int tx, int ty) const
 {
 	const sf::Vector2f &position = getPosition();
 
 	const int x = floor(position.x / 16);
 	const int y = floor(position.y / 16);
 
-	return m_collisionHandler.isCollidable(x, y + 1);
+	return m_collisionHandler.isCollidable(x + tx , y + ty);
 }
 
