@@ -16,14 +16,6 @@ bool Enemy::turnStart(const float delta)
 {
 	UNUSED(delta);
 
-	const bool isPlayerRightNextToMe =
-		abs(m_player.getPosition().x - getPosition().x) == 32 &&
-		m_player.getPosition().y == getPosition().y;
-	if (isPlayerRightNextToMe)
-	{
-		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
-	}
-
 	const bool isPlayerToTheRightOfMe = m_player.getPosition().x > getPosition().x;
 	int direction = (isPlayerToTheRightOfMe) ? 1 : -1;
 
@@ -41,6 +33,23 @@ bool Enemy::turnStart(const float delta)
 	}
 
 	setDirection(direction);
+
+	const bool isPlayerRightNextToMe =
+		abs(m_player.getPosition().x - getPosition().x) == 32 &&
+		m_player.getPosition().y == getPosition().y;
+	const bool isPlayerMovingAwayFromMe = m_player.direction() == direction;
+	if (isPlayerRightNextToMe && !isPlayerMovingAwayFromMe)
+	{
+		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
+	}
+
+	const bool willPlayerEndUpInTheSameTileAsI =
+		abs(m_player.getPosition().x + (m_player.direction() * 32) - getPosition().x) == 32 &&
+		m_player.getPosition().y == getPosition().y;
+	if (willPlayerEndUpInTheSameTileAsI)
+	{
+		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
+	}
 
 	return true;
 }

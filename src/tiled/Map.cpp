@@ -139,6 +139,24 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 						}
 					}
 				}
+				else if (layerName == "players")
+				{
+					const auto& playerSpawns = layer.find("objects").value();
+					if (playerSpawns.is_null() || playerSpawns.size() != 1)
+					{
+						std::cout << "None or too many player spawns" << std::endl;
+					}
+					else
+					{
+						std::cout << "Loading " << playerSpawns.size() << " spawn(s)." << std::endl;
+						for (const auto& spawn : playerSpawns)
+						{
+							const auto& x = spawn.find("x").value();
+							const auto& y = spawn.find("y").value();
+							m_playerSpawnPoints.push_back(sf::Vector2i(x, y));
+						}
+					}
+				}
 			}
 			else // tilelayer
 			{
@@ -184,6 +202,11 @@ const std::vector<std::unique_ptr<Light> > &Map::lights() const
 const std::vector<sf::Vector2i> &Map::spawnPoints() const
 {
 	return m_spawnPoints;
+}
+
+const std::vector<sf::Vector2i> &Map::playerSpawnPoints() const
+{
+	return m_playerSpawnPoints;
 }
 
 const std::vector<Trigger> &Map::triggerAreas() const
