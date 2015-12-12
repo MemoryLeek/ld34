@@ -6,18 +6,27 @@
 
 #include "CollisionHandler.h"
 #include "Entity.h"
+#include "EntityManager.h"
 #include "Util.h"
 
-Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture, const CollisionHandler &collisionHandler)
+Entity::Entity(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture, CollisionHandler &collisionHandler, EntityManager &entityManager)
 	: m_diffuseTexture(diffuseTexture)
 	, m_normalTexture(normalTexture)
 	, m_collisionHandler(collisionHandler)
+	, m_entityManager(entityManager)
 	, m_direction(0)
 	, m_pending(0)
 	, m_remaining(0)
 {
+	entityManager.add(this);
+
 	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
 	m_normalMapRotationShader.setParameter("texture", m_normalTexture);
+}
+
+Entity::~Entity()
+{
+	m_entityManager.remove(this);
 }
 
 void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const
@@ -71,7 +80,6 @@ void Entity::setDirection(int direction)
 		{
 			if (!m_direction)
 			{
-				m_direction = direction;
 				m_pending = direction;
 				m_remaining = 0.25f;
 			}
@@ -80,6 +88,14 @@ void Entity::setDirection(int direction)
 	else
 	{
 		m_pending = 0;
+	}
+}
+
+void Entity::execute()
+{
+	if (!m_direction)
+	{
+		m_direction = m_pending;
 	}
 }
 

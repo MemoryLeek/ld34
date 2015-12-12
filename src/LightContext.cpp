@@ -1,9 +1,9 @@
 #include "LightContext.h"
 
-LightContext::LightContext(const Tiled::Map &map, const sf::Texture &screenSpaceNormalMap, const std::vector<Entity *> &shadowCastingEntities)
+LightContext::LightContext(const Tiled::Map &map, const sf::Texture &screenSpaceNormalMap, const EntityManager &entityManager)
 	: m_map(map)
 	, m_screenSpaceNormalMap(screenSpaceNormalMap)
-	, m_shadowCastingEntities(shadowCastingEntities)
+	, m_entityManager(entityManager)
 {
 }
 
@@ -17,7 +17,7 @@ const sf::Texture &LightContext::screenSpaceNormalMap() const
 	return m_screenSpaceNormalMap;
 }
 
-const std::vector<Entity *> &LightContext::shadowCastingEntities() const
+const EntityManager &LightContext::entityManager() const
 {
-	return m_shadowCastingEntities;
+	return m_entityManager;
 }

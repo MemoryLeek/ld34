@@ -5,8 +5,10 @@
 
 #include "CollisionHandler.h"
 #include "Entity.h"
+#include "EntityManager.h"
 #include "IState.h"
 #include "Light.h"
+#include "TurnHandler.h"
 
 #include "tiled/Map.h"
 
@@ -38,9 +40,8 @@ class TestState : public IState
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
+		EntityManager m_entityManager;
 		Entity m_testEntity;
-
-		std::vector<Entity*> m_entities;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;
@@ -49,6 +50,7 @@ class TestState : public IState
 		LightContext m_lightContext;
 		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
+		TurnHandler m_turnHandler;
 
 		mutable float m_fpsTimer;
 		mutable int m_fpsCounter;

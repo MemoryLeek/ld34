@@ -8,11 +8,12 @@
 
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
-	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler)
+	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
 	, m_map("maps/1.json", m_lightContext)
-	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entities)
+	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
+	, m_turnHandler(m_entityManager)
 	, m_fpsCounter(0)
 {
 //	sf::View view(sf::FloatRect(0, 0, 640, 360));
@@ -25,8 +26,6 @@ TestState::TestState(StateCreationContext &context)
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
 	m_testEntity.setPosition(16 * 10, 16 * 9);
-
-	m_entities.push_back(&m_testEntity);
 }
 
 void TestState::update(const float delta)
@@ -62,12 +61,18 @@ void TestState::keyPressedEvent(const sf::Event& event)
 	{
 		case sf::Keyboard::D:
 		{
-			return m_testEntity.setDirection(1);
+			m_testEntity.setDirection(1);
+			m_turnHandler.execute();
+
+			return;
 		}
 
 		case sf::Keyboard::A:
 		{
-			return m_testEntity.setDirection(-1);
+			m_testEntity.setDirection(-1);
+			m_turnHandler.execute();
+
+			return;
 		}
 
 		default:
@@ -96,10 +101,15 @@ void TestState::keyReleasedEvent(const sf::Event& event)
 
 void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+	UNUSED(states);
+
 	// Step 0 - Draw the map normals to the normal map FBO
 	m_normalMapFbo.clear(sf::Color(127, 127, 255)); // Make the empty background face us
 	m_map.drawBackgroundNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
-	for (const auto* entity : m_entities)
+
+	const auto &entities = m_entityManager.entities();
+
+	for (const auto* entity : entities)
 	{
 		entity->drawNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
 	}
@@ -136,7 +146,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 			target.draw(layer);
 		}
 	}
-	for (const auto* entity : m_entities)
+	for (const auto* entity : entities)
 	{
 		target.draw(*entity);
 	}

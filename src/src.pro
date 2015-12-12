@@ -23,7 +23,10 @@ SOURCES += main.cpp \
     states/MainMenuState.cpp \
     MenuDefinitionEntry.cpp \
     CollisionHandler.cpp \
-    LightContext.cpp
+    LightContext.cpp \
+    TurnHandler.cpp \
+	EntityManager.cpp \
+    Enemy.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -44,7 +47,10 @@ HEADERS += \
     states/MainMenuState.h \
     MenuDefinitionEntry.h \
     CollisionHandler.h \
-    LightContext.h
+    LightContext.h \
+    TurnHandler.h \
+	EntityManager.h \
+    Enemy.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

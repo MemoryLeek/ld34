@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "Light.h"
+#include "EntityManager.h"
+
 #include "tiled/Map.h"
 
 Light::Light(const LightContext& context, float radius, const sf::Color& color)
@@ -91,7 +93,12 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 			m_occlusionMap.draw(layer);
 		}
 	}
-	for (const auto* occluder : m_context.shadowCastingEntities())
+
+	const auto &entities = m_context
+		.entityManager()
+		.entities();
+
+	for (const auto* occluder : entities)
 	{
 		m_occlusionMap.draw(*occluder);
 	}

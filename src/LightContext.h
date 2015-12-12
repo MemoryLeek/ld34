@@ -9,20 +9,21 @@ namespace Tiled
 }
 
 class Entity;
+class EntityManager;
 
 class LightContext
 {
 	public:
-		LightContext(const Tiled::Map& map, const sf::Texture& screenSpaceNormalMap, const std::vector<Entity*>& shadowCastingEntities);
+		LightContext(const Tiled::Map& map, const sf::Texture& screenSpaceNormalMap, const EntityManager &entityManager);
 
 		const Tiled::Map& map() const;
 		const sf::Texture& screenSpaceNormalMap() const;
-		const std::vector<Entity*>& shadowCastingEntities() const;
+		const EntityManager &entityManager() const;
 
 	private:
 		const Tiled::Map& m_map;
 		const sf::Texture& m_screenSpaceNormalMap;
-		const std::vector<Entity*>& m_shadowCastingEntities;
+		const EntityManager &m_entityManager;
 };
 
 #endif // LIGHTCONTEXT_H

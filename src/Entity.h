@@ -6,18 +6,21 @@
 #include <SFML/Graphics/Transformable.hpp>
 
 class CollisionHandler;
+class EntityManager;
 
 class Entity : public sf::Drawable, public sf::Transformable
 {
 	const sf::Vector2f Offset = sf::Vector2f(16, 12);
 
 	public:
-		Entity(const sf::Texture& diffuseTexture, const sf::Texture& normalTexture, const CollisionHandler &collisionHandler);
+		Entity(const sf::Texture& diffuseTexture, const sf::Texture& normalTexture, CollisionHandler &collisionHandler, EntityManager &entityManager);
+		~Entity();
 
 		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
 		void update(float delta);
 
 		void setDirection(int direction);
+		void execute();
 
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -28,7 +31,8 @@ class Entity : public sf::Drawable, public sf::Transformable
 		const sf::Texture& m_diffuseTexture;
 		const sf::Texture& m_normalTexture;
 
-		const CollisionHandler &m_collisionHandler;
+		CollisionHandler &m_collisionHandler;
+		EntityManager &m_entityManager;
 
 		mutable sf::Shader m_normalMapRotationShader;
 
