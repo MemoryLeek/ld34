@@ -31,7 +31,6 @@ class TestState : public IState
 
 	private:
 		sf::RenderWindow& m_window;
-		sf::View m_view;
 
 		sf::Vector2i m_mouseWindowPosition;
 		sf::Vector2f m_mouseWorldPosition;
