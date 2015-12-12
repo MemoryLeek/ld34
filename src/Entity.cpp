@@ -31,10 +31,12 @@ void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) 
 
 void Entity::update(float delta)
 {
-	if ((m_remaining -= delta) > 0)
+	if (m_remaining > 0)
 	{
-		move(m_direction * (delta * 128), 0);
-		rotate(m_direction * (delta * 360));
+		const auto remainingDelta = (m_remaining - delta < 0) ? m_remaining : delta;
+		move(m_direction * (remainingDelta * 128), 0);
+		rotate(m_direction * (remainingDelta * 360));
+		m_remaining -= delta;
 	}
 	else
 	{
