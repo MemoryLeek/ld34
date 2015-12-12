@@ -9,6 +9,7 @@
 #include <SFML/Graphics/VertexArray.hpp>
 
 #include "Entity.h"
+#include "LightContext.h"
 
 namespace Tiled
 {
@@ -18,7 +19,7 @@ namespace Tiled
 class Light : public sf::Drawable, public sf::Transformable
 {
 	public:
-		Light(float radius, const Tiled::Map& map, const sf::Texture& screenSpaceNormalMap, const std::vector<Entity*>& shadowCastingEntities, const sf::Color& color = sf::Color::White);
+		Light(const LightContext& context, float radius, const sf::Color& color = sf::Color::White);
 
 		float height() const;
 		Light& setHeight(float height);
@@ -27,10 +28,8 @@ class Light : public sf::Drawable, public sf::Transformable
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 	private:
+		const LightContext& m_context;
 		const float m_radius;
-		const Tiled::Map& m_map;
-		const sf::Texture& m_screenSpaceNormalMap;
-		const std::vector<Entity*>& m_shadowCastingEntities;
 		sf::Color m_color;
 		float m_height;
 

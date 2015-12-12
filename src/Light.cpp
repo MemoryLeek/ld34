@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -5,11 +7,9 @@
 #include "Light.h"
 #include "tiled/Map.h"
 
-Light::Light(float radius, const Tiled::Map& map, const sf::Texture &screenSpaceNormalMap, const std::vector<Entity *> &shadowCastingEntities, const sf::Color &color)
-	: m_radius(radius)
-	, m_map(map)
-	, m_screenSpaceNormalMap(screenSpaceNormalMap)
-	, m_shadowCastingEntities(shadowCastingEntities)
+Light::Light(const LightContext& context, float radius, const sf::Color& color)
+	: m_context(context)
+	, m_radius(radius)
 	, m_color(color)
 	, m_height(.1f)
 {
@@ -84,14 +84,14 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Create an occlusion map with all objects that cast shadows
 	m_occlusionMap.setView(lightView);
 	m_occlusionMap.clear(sf::Color::Transparent);
-	for (const auto& layer : m_map.layers())
+	for (const auto& layer : m_context.map().layers())
 	{
 		if (layer.property("castShadows"))
 		{
 			m_occlusionMap.draw(layer);
 		}
 	}
-	for (const auto* occluder : m_shadowCastingEntities)
+	for (const auto* occluder : m_context.shadowCastingEntities())
 	{
 		m_occlusionMap.draw(*occluder);
 	}
@@ -103,7 +103,7 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	m_shadowMap.display();
 
 	// Draw from the screen space normal map to the lights normal map
-	sf::Sprite ssnm(m_screenSpaceNormalMap, sf::IntRect(getPosition().x - m_radius, getPosition().y - m_radius, lightView.getSize().x, lightView.getSize().y));
+	sf::Sprite ssnm(m_context.screenSpaceNormalMap(), sf::IntRect(getPosition().x - m_radius, getPosition().y - m_radius, lightView.getSize().x, lightView.getSize().y));
 	m_normalMap.draw(ssnm);
 	m_normalMap.display();
 

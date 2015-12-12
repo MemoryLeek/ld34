@@ -11,7 +11,7 @@
 
 using namespace Tiled;
 
-Map::Map(const std::string &filename)
+Map::Map(const std::string& filename, const LightContext& lightContext)
 {
 	// Don't use the stream API in SFML, it sucks
 	std::ifstream stream(filename);;
@@ -69,28 +69,62 @@ Map::Map(const std::string &filename)
 				continue;
 			}
 
-			std::vector<int> tileArray;
-			for (const auto &id : layer.find("data").value())
+			if (layer.find("type").value() == "objectgroup")
 			{
-				tileArray.push_back(id);
-			}
-
-			if (tileArray.size() != static_cast<size_t>(layerSize.x * layerSize.y))
-			{
-				std::cout << "Layer data did not match layer size" << std::endl;
-				continue;
-			}
-
-			m_layers.push_back(Layer(layerSize, tileArray, m_tilesets));
-
-			const bool layerHasProperties = layer.find("properties") != layer.end();
-			if (layerHasProperties)
-			{
-				const auto& layerProperties = layer.find("properties").value();
-				for (auto it = layerProperties.begin(); it != layerProperties.end(); it++)
+				if (layerName == "lights")
 				{
-					const bool propertyIsTrue = it.value() == "true";
-					m_layers.back().setProperty(it.key(), propertyIsTrue);
+					const auto& lights = layer.find("objects").value();
+					if (lights.is_null())
+					{
+						std::cout << "No lights" << std::endl;
+					}
+					else
+					{
+						std::cout << "Loading " << lights.size() << " light(s)." << std::endl;
+						for (const auto& light : lights)
+						{
+							const auto& height = light.find("height").value().get<int>();
+							const auto& width = light.find("width").value().get<int>();
+							const auto& properties = light.find("properties").value();
+							const auto& red = atoi(properties.find("r").value().get<std::string>().data());
+							const auto& green = atoi(properties.find("g").value().get<std::string>().data());
+							const auto& blue = atoi(properties.find("b").value().get<std::string>().data());
+							const auto& x = light.find("x").value().get<int>() + width / 2;
+							const auto& y = light.find("y").value().get<int>() + height / 2;
+
+							const auto radius = (height > width) ? height : width;
+							std::unique_ptr<Light> lp(new Light(lightContext, radius, sf::Color(red, green, blue)));
+							lp->setPosition(x, y);
+							m_lights.push_back(std::move(lp));
+						}
+					}
+				}
+			}
+			else // tilelayer
+			{
+				std::vector<int> tileArray;
+				for (const auto &id : layer.find("data").value())
+				{
+					tileArray.push_back(id);
+				}
+
+				if (tileArray.size() != static_cast<size_t>(layerSize.x * layerSize.y))
+				{
+					std::cout << "Layer data did not match layer size" << std::endl;
+					continue;
+				}
+
+				m_layers.push_back(Layer(layerSize, tileArray, m_tilesets));
+
+				const bool layerHasProperties = layer.find("properties") != layer.end();
+				if (layerHasProperties)
+				{
+					const auto& layerProperties = layer.find("properties").value();
+					for (auto it = layerProperties.begin(); it != layerProperties.end(); it++)
+					{
+						const bool propertyIsTrue = it.value() == "true";
+						m_layers.back().setProperty(it.key(), propertyIsTrue);
+					}
 				}
 			}
 		}
@@ -100,6 +134,11 @@ Map::Map(const std::string &filename)
 const std::vector<Layer>& Map::layers() const
 {
 	return m_layers;
+}
+
+const std::vector<std::unique_ptr<Light> > &Map::lights() const
+{
+	return m_lights;
 }
 
 void Map::drawBackgroundNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const

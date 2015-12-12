@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     MenuDefinitionBuilder.cpp \
     states/MainMenuState.cpp \
     MenuDefinitionEntry.cpp \
-    CollisionHandler.cpp
+    CollisionHandler.cpp \
+    LightContext.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -42,7 +43,8 @@ HEADERS += \
     MenuDefinitionBuilder.h \
     states/MainMenuState.h \
     MenuDefinitionEntry.h \
-    CollisionHandler.h
+    CollisionHandler.h \
+    LightContext.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

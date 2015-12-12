@@ -46,6 +46,7 @@ class TestState : public IState
 		sf::Texture m_testEntityNormal;
 
 		Tiled::Map m_map;
+		LightContext m_lightContext;
 		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
 };

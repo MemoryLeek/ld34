@@ -7,8 +7,9 @@
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler)
-	, m_map("maps/1.json")
-	, m_mouseLight(512, m_map, m_normalMapFbo.getTexture(), m_entities, sf::Color::White)
+	, m_map("maps/1.json", m_lightContext)
+	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entities)
+	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
 {
 //	sf::View view(sf::FloatRect(0, 0, 640, 360));
@@ -112,6 +113,10 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Step 2 - Draw all lights to the light buffer
 	m_lightBuffer.clear(sf::Color(100, 100, 100)); // Ambient color
 	// Draw all lights (BlendAdd) to the light buffer
+	for (const auto& light : m_map.lights())
+	{
+		m_lightBuffer.draw(*light);
+	}
 	m_lightBuffer.draw(m_mouseLight);
 	m_lightBuffer.display();
 
