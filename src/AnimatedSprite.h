@@ -6,14 +6,13 @@
 class AnimatedSprite : public sf::Sprite
 {
 	public:
-		AnimatedSprite();
-		AnimatedSprite(const sf::Texture& texture, int frameRate);
+		AnimatedSprite(const sf::Texture& texture, int frameRate, int &currentFrame);
 
 		void update(float delta);
 
 	private:
 		float m_timePerFrame;
-		int m_currentFrame;
+		int& m_currentFrame;
 		int m_numberOfFrames;
 
 		float m_timeSinceLastFrameChange;

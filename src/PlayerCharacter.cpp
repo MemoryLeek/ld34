@@ -7,9 +7,11 @@ PlayerCharacter::PlayerCharacter(const sf::Texture &texture, const EntityCreatio
 
 }
 
-void PlayerCharacter::turnStart(const float delta)
+bool PlayerCharacter::turnStart(const float delta)
 {
 	UNUSED(delta);
+
+	return true;
 }
 
 void PlayerCharacter::handleMove(const float delta, const int direction)

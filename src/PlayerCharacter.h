@@ -9,7 +9,7 @@ class PlayerCharacter : public Entity
 		PlayerCharacter(const sf::Texture &texture, const EntityCreationContext &context);
 
 	protected:
-		void turnStart(const float delta) override;
+		bool turnStart(const float delta) override;
 		void handleMove(const float delta, const int direction) override;
 };
 

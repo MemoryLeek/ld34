@@ -11,7 +11,7 @@ class Enemy : public Entity
 		Enemy(const sf::Texture &texture, PlayerCharacter &player, const EntityCreationContext &context);
 
 	private:
-		void turnStart(const float delta) override;
+		bool turnStart(const float delta) override;
 		void handleMove(const float delta, const int direction) override;
 
 		PlayerCharacter &m_player;

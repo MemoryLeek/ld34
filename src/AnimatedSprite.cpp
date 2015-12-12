@@ -2,18 +2,10 @@
 
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite()
-	: m_timePerFrame(0)
-	, m_currentFrame(0)
-	, m_numberOfFrames(0)
-	, m_timeSinceLastFrameChange(0)
-{
-}
-
-AnimatedSprite::AnimatedSprite(const sf::Texture &texture, int frameRate)
+AnimatedSprite::AnimatedSprite(const sf::Texture &texture, int frameRate, int &currentFrame)
 	: sf::Sprite(texture)
 	, m_timePerFrame(1.f / frameRate)
-	, m_currentFrame(0)
+	, m_currentFrame(currentFrame)
 	, m_numberOfFrames(getTexture()->getSize().x / getTexture()->getSize().y)
 	, m_timeSinceLastFrameChange(0)
 {

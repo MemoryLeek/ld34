@@ -24,11 +24,10 @@ class Entity
 		Entity(const sf::Texture &texture, const EntityCreationContext &context);
 		~Entity();
 
-//		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
 		void setDirection(int direction);
 
-		void turnProgress(const float delta) override;
-		void turnIdle(const float delta) override;
+		bool turnProgress(const float delta) override;
+		bool turnEnd(const float delta) override;
 
 	protected:
 		virtual void handleMove(const float delta, const int direction) = 0;
@@ -38,13 +37,12 @@ class Entity
 		bool isCollidable(int tx, int ty) const;
 
 	private:
+		const sf::Texture &m_texture;
+
 		CollisionHandler &m_collisionHandler;
 		EntityManager &m_entityManager;
 
-		mutable AnimatedSprite m_sprite;
-
-//		mutable sf::Shader m_normalMapRotationShader;
-
+		int m_currentFrame;
 		int m_direction;
 };
 

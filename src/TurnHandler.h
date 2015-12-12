@@ -4,9 +4,10 @@
 class EntityManager;
 class ITurn;
 
-using Function = void (ITurn::*)(const float);
+using Function = bool (ITurn::*)(const float);
 
 const float TURN_LENGTH = 0.25f;
+const float END = -1;
 
 class TurnHandler
 {
@@ -21,7 +22,7 @@ class TurnHandler
 	private:
 		float getRemainingDelta(const float delta) const;
 
-		void raiseEvent(Function function, const float delta);
+		bool raiseEvent(Function function, const float delta);
 
 		EntityManager &m_entityManager;
 

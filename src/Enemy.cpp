@@ -12,7 +12,7 @@ Enemy::Enemy(const sf::Texture &texture, PlayerCharacter &player, const EntityCr
 
 }
 
-void Enemy::turnStart(const float delta)
+bool Enemy::turnStart(const float delta)
 {
 	UNUSED(delta);
 
@@ -35,6 +35,8 @@ void Enemy::turnStart(const float delta)
 	}
 
 	setDirection(direction);
+
+	return true;
 }
 
 void Enemy::handleMove(const float delta, const int direction)

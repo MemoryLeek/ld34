@@ -12,17 +12,13 @@
 #include "Util.h"
 
 Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
-	: m_collisionHandler(context.m_collisionHandler)
+	: m_texture(texture)
+	, m_collisionHandler(context.m_collisionHandler)
 	, m_entityManager(context.m_entityManager)
-	, m_sprite(texture, 36)
+	, m_currentFrame(0)
 	, m_direction(0)
 {
 	m_entityManager.add(this);
-
-//	const auto &normalTexture = m_textureProvider.normalTexture();
-
-//	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
-//	m_normalMapRotationShader.setParameter("texture", normalTexture);
 }
 
 Entity::~Entity()
@@ -30,27 +26,16 @@ Entity::~Entity()
 	m_entityManager.remove(this);
 }
 
-//void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const
-//{
-//	m_normalMapRotationShader.setParameter("rotation", (getRotation() * M_PI / 180));
-
-//	const auto &normalTexture = m_textureProvider.normalTexture();
-
-//	sf::Sprite sprite(normalTexture);
-//	sprite.setOrigin(sf::Vector2f(normalTexture.getSize()) / 2.f);
-//	sprite.setRotation(getRotation());
-//	sprite.setPosition(getPosition() + Offset);
-//	target.draw(sprite, &m_normalMapRotationShader);
-//}
-
 void Entity::setDirection(int direction)
 {
-	m_sprite.setScale(-direction, 1);
-
 	if (isCollidable(0, 1) >
 		isCollidable(direction, 0))
 	{
 		m_direction = direction;
+	}
+	else
+	{
+		m_direction = 0;
 	}
 
 	if (m_collisionHandler.getTriggers(getPosition()).size() > 0)
@@ -63,33 +48,41 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
-	const auto &rect = m_sprite.getTextureRect();
+	int currentFrame = m_currentFrame;
 
-	m_sprite.setOrigin(sf::Vector2f(rect.width, rect.height) / 2.f);
-	m_sprite.setRotation(getRotation());
-	m_sprite.setPosition(getPosition() + Offset);
+	AnimatedSprite sprite(m_texture, 36, currentFrame);
+	sprite.setOrigin(sf::Vector2f(32, 32) / 2.f);
+	sprite.setRotation(getRotation());
+	sprite.setPosition(getPosition() + Offset);
+	sprite.update(0);
 
-	target.draw(m_sprite);
+	if (m_direction)
+	{
+		sprite.setScale(-m_direction, 1);
+	}
+
+	target.draw(sprite);
 }
 
-void Entity::turnProgress(const float delta)
+bool Entity::turnProgress(const float delta)
 {
 	if (m_direction)
 	{
-		m_sprite.update(delta);
+		AnimatedSprite sprite(m_texture, 36, m_currentFrame);
+		sprite.update(delta);
 
 		handleMove(delta, m_direction);
 	}
-	else
-	{
-		turnIdle(delta);
-	}
+//	else
+//	{
+//		turnIdle(delta);
+//	}
+
+	return true;
 }
 
-void Entity::turnIdle(const float delta)
+bool Entity::turnEnd(const float delta)
 {
-	m_direction = 0;
-
 	if (isCollidable(0, 1))
 	{
 		const auto &position = getPosition();
@@ -97,11 +90,15 @@ void Entity::turnIdle(const float delta)
 		const auto ry = round(position.y / 32.0f);
 
 		setPosition(rx * 32, ry * 32);
+
+		return true;
 	}
 	else
 	{
 		move(0, delta * 184);
 	}
+
+	return false;
 }
 
 bool Entity::isCollidable(int tx, int ty) const
