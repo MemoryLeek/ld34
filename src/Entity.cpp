@@ -73,10 +73,6 @@ bool Entity::turnProgress(const float delta)
 
 		handleMove(delta, m_direction);
 	}
-//	else
-//	{
-//		turnIdle(delta);
-//	}
 
 	return true;
 }
