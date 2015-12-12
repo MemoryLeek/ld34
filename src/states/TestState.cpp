@@ -33,6 +33,8 @@ TestState::TestState(StateCreationContext &context)
 		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_testEntity, m_entityCreationContext);
 		enemy->setPosition(sf::Vector2f(spawnPoint));
 	}
+
+	m_testEntity.setPosition(sf::Vector2f(m_map.playerSpawnPoints().front()));
 }
 
 void TestState::update(const float delta)
