@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -34,15 +36,26 @@ void Entity::update(float delta)
 	if (m_remaining > 0)
 	{
 		const auto remainingDelta = (m_remaining - delta < 0) ? m_remaining : delta;
+
 		move(m_direction * (remainingDelta * 128), 0);
 		rotate(m_direction * (remainingDelta * 360));
+
 		m_remaining -= delta;
 	}
 	else
 	{
 		m_direction = m_pending;
 
-		if (!isCollidable(0, 1))
+		if (isCollidable(0, 1))
+		{
+			const auto &position = getPosition();
+			const auto rx = round(position.x / 32.0f);
+			const auto ry = round(position.y / 32.0f);
+
+			setPosition(rx * 32, position.y);
+			setPosition(rx * 32, ry * 32);
+		}
+		else
 		{
 			move(0, delta * 184);
 		}
@@ -90,4 +103,3 @@ bool Entity::isCollidable(int tx, int ty) const
 
 	return m_collisionHandler.isCollidable(x + tx , y + ty);
 }
-

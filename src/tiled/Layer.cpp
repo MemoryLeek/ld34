@@ -103,7 +103,7 @@ Layer& Layer::setProperty(const std::string &name, bool isSet)
 
 bool Layer::hasTileAt(int x, int y) const
 {
-	return m_tileData[x + 1 + y * m_size.x] > 0;
+	return m_tileData[x + y * m_size.x] > 0;
 }
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
