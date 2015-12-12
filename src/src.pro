@@ -26,7 +26,9 @@ SOURCES += main.cpp \
     LightContext.cpp \
     TurnHandler.cpp \
 	EntityManager.cpp \
-    Enemy.cpp
+    Enemy.cpp \
+    PlayerCharacter.cpp \
+    EntityCreationContext.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -50,7 +52,9 @@ HEADERS += \
     LightContext.h \
     TurnHandler.h \
 	EntityManager.h \
-    Enemy.h
+    Enemy.h \
+    PlayerCharacter.h \
+    EntityCreationContext.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

@@ -5,7 +5,7 @@
 #include "Util.h"
 
 MenuState::MenuState(StateCreationContext &context)
-	: m_stateHandler(context)
+	: m_stateHandler(context.m_stateHandler)
 {
 
 }

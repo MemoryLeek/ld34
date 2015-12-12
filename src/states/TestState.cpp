@@ -7,9 +7,10 @@
 #include "Util.h"
 
 TestState::TestState(StateCreationContext &context)
-	: m_window(context)
+	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
-	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
+	, m_entityCreationContext(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
+	, m_testEntity(m_entityCreationContext)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
@@ -22,7 +23,7 @@ TestState::TestState(StateCreationContext &context)
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
-	m_testEntity.setPosition(16 * 10, 16 * 9);
+	m_testEntity.setPosition(16 * 10, 0);
 }
 
 void TestState::update(const float delta)

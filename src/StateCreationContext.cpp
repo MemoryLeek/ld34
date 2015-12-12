@@ -6,13 +6,3 @@ StateCreationContext::StateCreationContext(StateHandler &stateHandler, sf::Rende
 {
 
 }
-
-StateCreationContext::operator StateHandler &() const
-{
-	return m_stateHandler;
-}
-
-StateCreationContext::operator sf::RenderWindow &() const
-{
-	return m_window;
-}

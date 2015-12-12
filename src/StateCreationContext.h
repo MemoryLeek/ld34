@@ -7,12 +7,12 @@ class StateHandler;
 
 class StateCreationContext
 {
+	friend class LogoState;
+	friend class TestState;
+	friend class MenuState;
+
 	public:
 		StateCreationContext(StateHandler &stateHandler, sf::RenderWindow &window);
-
-		operator StateHandler &() const;
-
-		operator sf::RenderWindow &() const;
 
 	private:
 		StateHandler &m_stateHandler;

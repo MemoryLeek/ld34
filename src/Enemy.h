@@ -6,7 +6,7 @@
 class Enemy : public Entity
 {
 	public:
-		Enemy(const sf::Texture &diffuseTexture, const sf::Texture &normalTexture, CollisionHandler &collisionHandler, EntityManager &entityManager);
+		Enemy(const EntityCreationContext &context);
 };
 
 #endif // ENEMY_H

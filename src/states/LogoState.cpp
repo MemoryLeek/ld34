@@ -6,8 +6,8 @@
 #include "Util.h"
 
 LogoState::LogoState(StateCreationContext &context)
-	: m_stateHandler(context)
-	, m_window(context)
+	: m_stateHandler(context.m_stateHandler)
+	, m_window(context.m_window)
 {
 	m_texture.loadFromFile("images/logo.png");
 

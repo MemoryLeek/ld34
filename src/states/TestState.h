@@ -4,8 +4,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "CollisionHandler.h"
-#include "Entity.h"
+#include "PlayerCharacter.h"
 #include "EntityManager.h"
+#include "EntityCreationContext.h"
 #include "IState.h"
 #include "Light.h"
 #include "TurnHandler.h"
@@ -42,7 +43,8 @@ class TestState : public IState
 		mutable sf::RenderTexture m_normalMapFbo;
 
 		EntityManager m_entityManager;
-		Entity m_testEntity;
+		EntityCreationContext m_entityCreationContext;
+		PlayerCharacter m_testEntity;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_testEntityNormal;
