@@ -26,6 +26,11 @@ Entity::~Entity()
 	m_entityManager.remove(this);
 }
 
+int Entity::direction() const
+{
+	return m_direction;
+}
+
 void Entity::setDirection(int direction)
 {
 	if (isCollidable(0, 1) >

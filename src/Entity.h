@@ -24,6 +24,7 @@ class Entity
 		Entity(const sf::Texture &texture, const EntityCreationContext &context);
 		~Entity();
 
+		int direction() const;
 		void setDirection(int direction);
 
 		bool turnProgress(const float delta) override;
