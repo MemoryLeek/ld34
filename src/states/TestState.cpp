@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "StateCreationContext.h"
@@ -11,6 +13,7 @@ TestState::TestState(StateCreationContext &context)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entities)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
+	, m_fpsCounter(0)
 {
 //	sf::View view(sf::FloatRect(0, 0, 640, 360));
 
@@ -29,6 +32,7 @@ TestState::TestState(StateCreationContext &context)
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
+	m_fpsTimer += delta;
 }
 
 void TestState::mouseMoveEvent(const sf::Event& event)
@@ -135,6 +139,14 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	for (const auto* entity : m_entities)
 	{
 		target.draw(*entity);
+	}
+
+	m_fpsCounter++;
+	if (m_fpsTimer >= 1)
+	{
+		std::cout << "FPS: " << m_fpsCounter << std::endl;
+		m_fpsCounter = 0;
+		m_fpsTimer = 0;
 	}
 }
 

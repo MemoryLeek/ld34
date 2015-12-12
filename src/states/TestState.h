@@ -49,6 +49,9 @@ class TestState : public IState
 		LightContext m_lightContext;
 		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
+
+		mutable float m_fpsTimer;
+		mutable int m_fpsCounter;
 };
 
 #endif // TESTSTATE_H
