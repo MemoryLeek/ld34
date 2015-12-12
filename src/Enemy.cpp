@@ -16,6 +16,14 @@ void Enemy::turnStart(const float delta)
 {
 	UNUSED(delta);
 
+	const bool isPlayerRightNextToMe =
+		abs(m_player.getPosition().x - getPosition().x) == 32 &&
+		m_player.getPosition().y == getPosition().y;
+	if (isPlayerRightNextToMe)
+	{
+		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
+	}
+
 	const bool isPlayerToTheRightOfMe = m_player.getPosition().x > getPosition().x;
 	int direction = (isPlayerToTheRightOfMe) ? 1 : -1;
 
