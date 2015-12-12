@@ -31,6 +31,12 @@ bool Enemy::turnStart(const float delta)
 	const bool isNewPositionInTheAir = !isCollidable(direction, 1);
 	if (isNewPositionInTheAir && isPlayerAboveMe)
 	{
+		direction = isCollidable(-direction, 1) ? -direction : direction ;
+	}
+
+	const bool isNewPositionAWall = isCollidable(direction, 0);
+	if (isNewPositionAWall)
+	{
 		direction = -direction;
 	}
 
