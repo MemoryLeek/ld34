@@ -40,7 +40,7 @@ void TestState::mouseMoveEvent(const sf::Event& event)
 	m_mouseWindowPosition.y = event.mouseMove.y;
 	m_mouseWorldPosition = m_window.mapPixelToCoords(m_mouseWindowPosition);
 
-	m_mouseLight.setPosition(m_mouseWorldPosition);
+	m_mouseLight.setPosition(sf::Vector2f(sf::Vector2i(m_mouseWorldPosition)));
 }
 
 void TestState::mouseScrollEvent(const sf::Event& event)
