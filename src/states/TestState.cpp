@@ -11,9 +11,9 @@ TestState::TestState(StateCreationContext &context)
 	, m_map("maps/1.json")
 	, m_collisionHandler(m_map)
 {
-	sf::View view(sf::FloatRect(0, 0, 640, 360));
+//	sf::View view(sf::FloatRect(0, 0, 640, 360));
 
-	m_window.setView(view);
+//	m_window.setView(view);
 
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);

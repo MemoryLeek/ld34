@@ -33,7 +33,7 @@ void Entity::update(float delta)
 {
 	if ((m_remaining -= delta) > 0)
 	{
-		move(m_direction * (delta * 32), 0);
+		move(m_direction * (delta * 64), 0);
 		rotate(m_direction * (delta * 180));
 	}
 	else
@@ -83,8 +83,8 @@ bool Entity::isCollidable(int tx, int ty) const
 {
 	const sf::Vector2f &position = getPosition();
 
-	const int x = floor(position.x / 16);
-	const int y = floor(position.y / 16);
+	const int x = floor(position.x / 32);
+	const int y = floor(position.y / 32);
 
 	return m_collisionHandler.isCollidable(x + tx , y + ty);
 }
