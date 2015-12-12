@@ -34,9 +34,9 @@ class Entity
 
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-	private:
 		bool isCollidable(int tx, int ty) const;
 
+	private:
 		ITextureProvider &m_textureProvider;
 		CollisionHandler &m_collisionHandler;
 		EntityManager &m_entityManager;
