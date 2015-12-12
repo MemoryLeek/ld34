@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Shader.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 
+#include "AnimatedSprite.h"
 #include "ITurn.h"
 
 class CollisionHandler;
@@ -20,10 +21,10 @@ class Entity
 	const sf::Vector2f Offset = sf::Vector2f(16, 12);
 
 	public:
-		Entity(ITextureProvider &textureProvider, const EntityCreationContext &context);
+		Entity(const sf::Texture &texture, const EntityCreationContext &context);
 		~Entity();
 
-		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
+//		void drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const;
 		void setDirection(int direction);
 
 		void turnProgress(const float delta) override;
@@ -37,11 +38,12 @@ class Entity
 		bool isCollidable(int tx, int ty) const;
 
 	private:
-		ITextureProvider &m_textureProvider;
 		CollisionHandler &m_collisionHandler;
 		EntityManager &m_entityManager;
 
-		mutable sf::Shader m_normalMapRotationShader;
+		mutable AnimatedSprite m_sprite;
+
+//		mutable sf::Shader m_normalMapRotationShader;
 
 		int m_direction;
 };

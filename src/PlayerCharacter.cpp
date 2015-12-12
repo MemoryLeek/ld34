@@ -1,8 +1,8 @@
 #include "PlayerCharacter.h"
 #include "Util.h"
 
-PlayerCharacter::PlayerCharacter(ITextureProvider &textureProvider, const EntityCreationContext &context)
-	: Entity(textureProvider, context)
+PlayerCharacter::PlayerCharacter(const sf::Texture &texture, const EntityCreationContext &context)
+	: Entity(texture, context)
 {
 
 }

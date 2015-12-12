@@ -3,9 +3,10 @@
 #include "Enemy.h"
 #include "PlayerCharacter.h"
 #include "Util.h"
+#include "TurnHandler.h"
 
-Enemy::Enemy(ITextureProvider &textureProvider, PlayerCharacter &player, const EntityCreationContext &context)
-	: Entity(textureProvider, context)
+Enemy::Enemy(const sf::Texture &texture, PlayerCharacter &player, const EntityCreationContext &context)
+	: Entity(texture, context)
 	, m_player(player)
 {
 

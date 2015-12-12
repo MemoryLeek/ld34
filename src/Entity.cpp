@@ -11,18 +11,18 @@
 #include "EntityManager.h"
 #include "Util.h"
 
-Entity::Entity(ITextureProvider &textureProvider, const EntityCreationContext &context)
-	: m_textureProvider(textureProvider)
-	, m_collisionHandler(context.m_collisionHandler)
+Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
+	: m_collisionHandler(context.m_collisionHandler)
 	, m_entityManager(context.m_entityManager)
+	, m_sprite(texture, 36)
 	, m_direction(0)
 {
 	m_entityManager.add(this);
 
-	const auto &normalTexture = m_textureProvider.normalTexture();
+//	const auto &normalTexture = m_textureProvider.normalTexture();
 
-	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
-	m_normalMapRotationShader.setParameter("texture", normalTexture);
+//	m_normalMapRotationShader.loadFromFile("glsl/passthrough.vert", "glsl/normalmaprotation.frag");
+//	m_normalMapRotationShader.setParameter("texture", normalTexture);
 }
 
 Entity::~Entity()
@@ -30,22 +30,24 @@ Entity::~Entity()
 	m_entityManager.remove(this);
 }
 
-void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const
-{
-	m_normalMapRotationShader.setParameter("rotation", (getRotation() * M_PI / 180));
+//void Entity::drawNormalMapTo(sf::RenderTarget &target, sf::RenderStates states) const
+//{
+//	m_normalMapRotationShader.setParameter("rotation", (getRotation() * M_PI / 180));
 
-	const auto &normalTexture = m_textureProvider.normalTexture();
+//	const auto &normalTexture = m_textureProvider.normalTexture();
 
-	sf::Sprite sprite(normalTexture);
-	sprite.setOrigin(sf::Vector2f(normalTexture.getSize()) / 2.f);
-	sprite.setRotation(getRotation());
-	sprite.setPosition(getPosition() + Offset);
-	target.draw(sprite, &m_normalMapRotationShader);
-}
+//	sf::Sprite sprite(normalTexture);
+//	sprite.setOrigin(sf::Vector2f(normalTexture.getSize()) / 2.f);
+//	sprite.setRotation(getRotation());
+//	sprite.setPosition(getPosition() + Offset);
+//	target.draw(sprite, &m_normalMapRotationShader);
+//}
 
 void Entity::setDirection(int direction)
 {
-	if (isCollidable(0, 1) && !
+	m_sprite.setScale(-direction, 1);
+
+	if (isCollidable(0, 1) >
 		isCollidable(direction, 0))
 	{
 		m_direction = direction;
@@ -61,19 +63,21 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
-	const auto &diffuseTexture = m_textureProvider.diffuseTexture();
+	const auto &rect = m_sprite.getTextureRect();
 
-	sf::Sprite sprite(diffuseTexture);
-	sprite.setOrigin(sf::Vector2f(diffuseTexture.getSize()) / 2.f);
-	sprite.setRotation(getRotation());
-	sprite.setPosition(getPosition() + Offset);
-	target.draw(sprite);
+	m_sprite.setOrigin(sf::Vector2f(rect.width, rect.height) / 2.f);
+	m_sprite.setRotation(getRotation());
+	m_sprite.setPosition(getPosition() + Offset);
+
+	target.draw(m_sprite);
 }
 
 void Entity::turnProgress(const float delta)
 {
 	if (m_direction)
 	{
+		m_sprite.update(delta);
+
 		handleMove(delta, m_direction);
 	}
 	else

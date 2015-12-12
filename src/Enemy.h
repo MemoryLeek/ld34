@@ -8,7 +8,7 @@ class PlayerCharacter;
 class Enemy : public Entity
 {
 	public:
-		Enemy(ITextureProvider &textureProvider, PlayerCharacter &player, const EntityCreationContext &context);
+		Enemy(const sf::Texture &texture, PlayerCharacter &player, const EntityCreationContext &context);
 
 	private:
 		void turnStart(const float delta) override;

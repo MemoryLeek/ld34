@@ -6,7 +6,7 @@
 class PlayerCharacter : public Entity
 {
 	public:
-		PlayerCharacter(ITextureProvider &textureProvider, const EntityCreationContext &context);
+		PlayerCharacter(const sf::Texture &texture, const EntityCreationContext &context);
 
 	protected:
 		void turnStart(const float delta) override;

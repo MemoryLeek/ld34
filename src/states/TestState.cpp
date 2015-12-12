@@ -10,8 +10,8 @@
 TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
-	, m_entityCreationContext(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
-	, m_testEntity(m_playerCharacterTextureProvider, m_entityCreationContext)
+	, m_entityCreationContext(m_collisionHandler, m_entityManager)
+	, m_testEntity(m_testEntityDiffuse, m_entityCreationContext)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
@@ -23,16 +23,14 @@ TestState::TestState(StateCreationContext &context)
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
-	m_testEntityNormal.loadFromFile("sprites/cube_n.png");
+
 	m_testEntity.setPosition(16 * 10, 0);
 
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
-	m_testWorm = AnimatedSprite(m_wormAnimationStrip, 9 * 2);
-	m_testWorm.setPosition(32 * 10, 32 * 10);
 
 	for (const auto& spawnPoint : m_map.spawnPoints())
 	{
-		Enemy *enemy = new Enemy(m_enemyTextureProvider, m_testEntity, m_entityCreationContext);
+		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_testEntity, m_entityCreationContext);
 		enemy->setPosition(sf::Vector2f(spawnPoint));
 	}
 }
@@ -40,7 +38,6 @@ TestState::TestState(StateCreationContext &context)
 void TestState::update(const float delta)
 {
 	m_turnHandler.update(delta);
-	m_testWorm.update(delta);
 
 	m_view.setCenter(m_window.getSize().x / 2, m_testEntity.getPosition().y + 32 * 10);
 
@@ -118,10 +115,10 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	const auto &entities = m_entityManager.entities();
 
-	for (const auto* entity : entities)
-	{
-		entity->drawNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
-	}
+//	for (const auto* entity : entities)
+//	{
+//		entity->drawNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
+//	}
 	m_normalMapFbo.display();
 
 	// Step 1 - Draw everything that should receive light
@@ -162,7 +159,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
 		target.draw(*entity);
 	}
-	target.draw(m_testWorm);
+//	target.draw(m_testWorm);
 
 	m_fpsCounter++;
 	if (m_fpsTimer >= 1)

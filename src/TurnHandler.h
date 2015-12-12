@@ -6,10 +6,10 @@ class ITurn;
 
 using Function = void (ITurn::*)(const float);
 
+const float TURN_LENGTH = 0.25f;
+
 class TurnHandler
 {
-	const float TURN_LENGTH = 0.25f;
-
 	public:
 		TurnHandler(EntityManager &entityManager);
 
