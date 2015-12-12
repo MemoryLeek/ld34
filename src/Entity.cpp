@@ -92,7 +92,6 @@ void Entity::turnIdle(const float delta)
 		const auto rx = round(position.x / 32.0f);
 		const auto ry = round(position.y / 32.0f);
 
-		setPosition(rx * 32, position.y);
 		setPosition(rx * 32, ry * 32);
 	}
 	else
@@ -104,7 +103,7 @@ void Entity::turnIdle(const float delta)
 bool Entity::isCollidable(int tx, int ty) const
 {
 	const auto &position = getPosition();
-	const auto x = floor(position.x / 32);
+	const auto x = floor(position.x / 32 + .5f);
 	const auto y = floor(position.y / 32);
 
 	return m_collisionHandler.isCollidable(x + tx , y + ty);
