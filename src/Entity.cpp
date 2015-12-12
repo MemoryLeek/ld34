@@ -33,8 +33,8 @@ void Entity::update(float delta)
 {
 	if ((m_remaining -= delta) > 0)
 	{
-		move(m_direction * (delta * 64), 0);
-		rotate(m_direction * (delta * 180));
+		move(m_direction * (delta * 128), 0);
+		rotate(m_direction * (delta * 360));
 	}
 	else
 	{
@@ -42,7 +42,7 @@ void Entity::update(float delta)
 
 		if (!isCollidable(0, 1))
 		{
-			move(0, delta * 92);
+			move(0, delta * 184);
 		}
 	}
 }
@@ -58,7 +58,7 @@ void Entity::setDirection(int direction)
 			{
 				m_direction = direction;
 				m_pending = direction;
-				m_remaining = 0.5f;
+				m_remaining = 0.25f;
 			}
 		}
 	}

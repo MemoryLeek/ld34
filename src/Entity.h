@@ -9,7 +9,7 @@ class CollisionHandler;
 
 class Entity : public sf::Drawable, public sf::Transformable
 {
-	const sf::Vector2f Offset = sf::Vector2f(16, 16);
+	const sf::Vector2f Offset = sf::Vector2f(16, 12);
 
 	public:
 		Entity(const sf::Texture& diffuseTexture, const sf::Texture& normalTexture, const CollisionHandler &collisionHandler);
