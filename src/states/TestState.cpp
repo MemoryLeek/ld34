@@ -8,6 +8,7 @@
 
 TestState::TestState(StateCreationContext &context)
 	: m_window(context)
+	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_testEntity(m_testEntityDiffuse, m_testEntityNormal, m_collisionHandler, m_entityManager)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
@@ -16,10 +17,6 @@ TestState::TestState(StateCreationContext &context)
 	, m_turnHandler(m_entityManager)
 	, m_fpsCounter(0)
 {
-//	sf::View view(sf::FloatRect(0, 0, 640, 360));
-
-//	m_window.setView(view);
-
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
@@ -31,6 +28,9 @@ TestState::TestState(StateCreationContext &context)
 void TestState::update(const float delta)
 {
 	m_testEntity.update(delta);
+
+	m_view.setCenter(m_testEntity.getPosition() - sf::Vector2f(0, 32 * -10));
+
 	m_fpsTimer += delta;
 }
 
@@ -103,6 +103,8 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
+	target.setView(m_view);
+
 	// Step 0 - Draw the map normals to the normal map FBO
 	m_normalMapFbo.clear(sf::Color(127, 127, 255)); // Make the empty background face us
 	m_map.drawBackgroundNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
@@ -125,6 +127,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	}
 
 	// Step 2 - Draw all lights to the light buffer
+	m_lightBuffer.setView(m_view);
 	m_lightBuffer.clear(sf::Color(100, 100, 100)); // Ambient color
 	// Draw all lights (BlendAdd) to the light buffer
 	for (const auto& light : m_map.lights())
@@ -136,7 +139,9 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	// Step 3 - Draw the light buffer to the screen with BlendMultiply
 	sf::Sprite lightMapSprite(m_lightBuffer.getTexture());
+	target.setView(target.getDefaultView());
 	target.draw(lightMapSprite, sf::BlendMultiply);
+	target.setView(m_view);
 
 	// Step 4 - Draw everything that doesn't receive light
 	for (const auto& layer : m_map.layers())
