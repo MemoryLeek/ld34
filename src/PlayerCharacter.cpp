@@ -73,7 +73,9 @@ void PlayerCharacter::handleMove(const float delta, const int direction)
 		return;
 	}
 
-	move(direction * (delta * 128), 0);
+	const auto &scale = getScale();
+
+	move(direction * (delta * 128 * scale.x), 0);
 	rotate(direction * (delta * 360));
 }
 
@@ -92,8 +94,14 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 		return true;
 	}
 
-	// Reset other powerups
-	setScale(1, 1);
+	if (type != Growing)
+	{
+		if (getScale().x > 1)
+		{
+			scale(1 - (delta * 4), 1 - (delta * 4));
+		}
+	}
+
 	m_kaboomTickTimer = 0;
 	m_frozenTickTimer = 0;
 
@@ -101,9 +109,7 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 	{
 		case Growing:
 		{
-			setScale(2, 2);
-//			scale(delta * 2, delta * 2);
-
+			scale(1 + (delta * 4), 1 + (delta * 4));
 			break;
 		}
 		case Explosive:

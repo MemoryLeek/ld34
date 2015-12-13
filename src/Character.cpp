@@ -56,16 +56,17 @@ void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	auto animatedSpriteState = m_animatedSpriteState;
 
+	const auto &scale = getScale();
+
 	AnimatedSprite sprite(m_texture, animatedSpriteState);
 	sprite.setOrigin(sf::Vector2f(32, 32) / 2.f);
 	sprite.setRotation(getRotation());
 	sprite.setPosition(getPosition() + Offset);
+	sprite.move(0, -16 * (scale.y - 1));
 	sprite.update(0);
 
 	if (m_direction)
 	{
-		const auto &scale = getScale();
-
 		sprite.setScale(-m_direction * scale.x, scale.y);
 	}
 
@@ -114,7 +115,8 @@ bool Character::turnEnd(const float delta)
 		return false;
 	}
 
-	const int tileType = getTileType(0, 1);
+//	const auto &scale = getScale();
+	const auto tileType = getTileType(0, 1);
 
 	if (tileType)
 	{
