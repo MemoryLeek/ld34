@@ -15,11 +15,21 @@ bool PlayerCharacter::turnStart(const float delta)
 {
 	UNUSED(delta);
 
+	if (m_frozenTickTimer > 0)
+	{
+		m_frozenTickTimer--;
+	}
+
 	return true;
 }
 
 void PlayerCharacter::handleMove(const float delta, const int direction)
 {
+	if (m_frozenTickTimer > 0)
+	{
+		return;
+	}
+
 	move(direction * (delta * 128), 0);
 	rotate(direction * (delta * 360));
 }
@@ -31,7 +41,7 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 		return true;
 	}
 
-	if ((m_powerUpTimer += delta) > 1.0f)
+	if ((m_powerUpTimer += delta) > 0.25f)
 	{
 		m_powerUp = type;
 		m_powerUpTimer = 0;
@@ -46,6 +56,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 			setScale(2, 2);
 //			scale(delta * 2, delta * 2);
 
+			break;
+		}
+		case Frozen:
+		{
+			m_frozenTickTimer = 5;
 			break;
 		}
 	}

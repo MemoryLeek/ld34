@@ -22,6 +22,7 @@ class PlayerCharacter : public Character
 		int m_powerUp;
 
 		float m_powerUpTimer;
+		int m_frozenTickTimer;
 };
 
 #endif // PLAYERCHARACTER_H
