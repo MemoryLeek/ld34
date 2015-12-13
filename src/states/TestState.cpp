@@ -84,7 +84,8 @@ void TestState::update(const float delta)
 			y = 360;
 		}
 		m_view.setCenter(m_window.getSize().x / 2, y);
-		sf::Listener::setPosition(m_window.getSize().x / 2, y, 0.f);
+		sf::Listener::setPosition(m_window.getSize().x / 2, y, 0);
+		sf::Listener::setDirection(m_window.getSize().x / 2, y, -1);
 	}
 
 	m_fpsTimer += delta;
