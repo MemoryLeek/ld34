@@ -12,7 +12,7 @@ class EntityManager;
 
 class EntityCreationContext
 {
-	friend class Entity;
+	friend class Character;
 
 	public:
 		EntityCreationContext(CollisionHandler &collisionHandler, EntityManager &entityManager);

@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
-#include "Entity.h"
+#include "Character.h"
 #include "LightContext.h"
 
 namespace Tiled

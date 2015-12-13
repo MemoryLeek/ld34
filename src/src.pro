@@ -11,7 +11,6 @@ SOURCES += main.cpp \
 	tiled/Map.cpp \
 	tiled/Layer.cpp \
 	Light.cpp \
-	Entity.cpp \
 	Window.cpp \
 	states/TestState.cpp \
 	states/LogoState.cpp \
@@ -33,14 +32,15 @@ SOURCES += main.cpp \
     AnimatedSprite.cpp \
     tiled/Trigger.cpp \
     AnimatedSpriteState.cpp \
-    AnimatedSpriteSegment.cpp
+    AnimatedSpriteSegment.cpp \
+    Character.cpp \
+    Player.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
 	tiled/Map.h \
 	tiled/Layer.h \
 	Light.h \
-	Entity.h \
 	Window.h \
 	IState.h \
 	states/TestState.h \
@@ -65,7 +65,10 @@ HEADERS += \
 	tiled/Trigger.h \
     ITurn.h \
     AnimatedSpriteState.h \
-    AnimatedSpriteSegment.h
+    AnimatedSpriteSegment.h \
+    Character.h \
+    IEntity.h \
+    Player.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

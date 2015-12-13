@@ -3,7 +3,7 @@
 #include "Util.h"
 
 PlayerCharacter::PlayerCharacter(const sf::Texture &texture, std::vector<PlayerCharacter*> &playerCharacterList, const EntityCreationContext &context)
-	: Entity(texture, context)
+	: Character(texture, context)
 	, m_playerCharacterList(playerCharacterList)
 {
 
@@ -26,6 +26,6 @@ void PlayerCharacter::clone(const sf::Vector2f &destination)
 {
 	auto* newCharacter = new PlayerCharacter(m_texture, m_playerCharacterList, m_creationContext);
 	newCharacter->setPosition(destination);
-	m_entityManager.add(newCharacter);
+
 	m_playerCharacterList.push_back(newCharacter);
 }

@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include "Entity.h"
+#include "Character.h"
 
 class PlayerCharacter;
 
-class Enemy : public Entity
+class Enemy : public Character
 {
 	public:
 		Enemy(const sf::Texture &texture, const std::vector<PlayerCharacter*> &playerCharacters, const EntityCreationContext &context);

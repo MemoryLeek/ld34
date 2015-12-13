@@ -8,7 +8,7 @@ namespace Tiled
 	class Map;
 }
 
-class Entity;
+class Character;
 class EntityManager;
 
 class LightContext

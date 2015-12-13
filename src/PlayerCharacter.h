@@ -1,9 +1,9 @@
 #ifndef PLAYERCHARACTER_H
 #define PLAYERCHARACTER_H
 
-#include "Entity.h"
+#include "Character.h"
 
-class PlayerCharacter : public Entity
+class PlayerCharacter : public Character
 {
 	public:
 		PlayerCharacter(const sf::Texture &texture, std::vector<PlayerCharacter *> &playerCharacterList, const EntityCreationContext &context);

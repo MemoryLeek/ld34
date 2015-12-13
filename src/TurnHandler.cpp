@@ -1,6 +1,6 @@
 #include "TurnHandler.h"
 #include "EntityManager.h"
-#include "Entity.h"
+#include "Character.h"
 
 TurnHandler::TurnHandler(EntityManager &entityManager)
 	: m_entityManager(entityManager)
@@ -57,14 +57,9 @@ bool TurnHandler::raiseEvent(Function function, const float delta)
 
 	const auto &entities = m_entityManager.entities();
 
-	for (Entity *entity : entities)
+	for (IEntity *entity : entities)
 	{
-		ITurn *turn = dynamic_cast<ITurn *>(entity);
-
-		if (turn)
-		{
-			result &= (turn->*function)(delta);
-		}
+		result &= (entity->*function)(delta);
 	}
 
 	return result;

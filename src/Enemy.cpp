@@ -7,7 +7,7 @@
 #include "TurnHandler.h"
 
 Enemy::Enemy(const sf::Texture &texture, const std::vector<PlayerCharacter *> &playerCharacters, const EntityCreationContext &context)
-	: Entity(texture, context)
+	: Character(texture, context)
 	, m_playerCharacters(playerCharacters)
 {
 
@@ -89,7 +89,7 @@ bool Enemy::turnStart(const float delta)
 	const bool isPlayerMovingAwayFromMe = targetCharacter->direction() == direction;
 	if (isPlayerRightNextToMe && !isPlayerMovingAwayFromMe)
 	{
-		targetCharacter->kill();
+		targetCharacter->setIsDead(true);
 	}
 
 	const bool willPlayerEndUpInTheSameTileAsI =
@@ -97,7 +97,7 @@ bool Enemy::turnStart(const float delta)
 		targetCharacter->getPosition().y == getPosition().y;
 	if (willPlayerEndUpInTheSameTileAsI)
 	{
-		targetCharacter->kill();
+		targetCharacter->setIsDead(true);
 	}
 
 	return true;

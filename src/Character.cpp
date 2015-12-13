@@ -7,13 +7,13 @@
 #include "ITextureProvider.h"
 #include "CollisionHandler.h"
 #include "EntityCreationContext.h"
-#include "Entity.h"
+#include "Character.h"
 #include "EntityManager.h"
 #include "PlayerCharacter.h"
 #include "Util.h"
 #include "tiled/Map.h"
 
-Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
+Character::Character(const sf::Texture &texture, const EntityCreationContext &context)
 	: m_texture(texture)
 	, m_creationContext(context)
 	, m_entityManager(context.m_entityManager)
@@ -27,17 +27,17 @@ Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
 	m_animatedSpriteState.setSegment(0, 9);
 }
 
-Entity::~Entity()
+Character::~Character()
 {
 	m_entityManager.remove(this);
 }
 
-int Entity::direction() const
+int Character::direction() const
 {
 	return m_direction;
 }
 
-void Entity::setDirection(int direction)
+void Character::setDirection(int direction)
 {
 	if (isCollidable(0, 1) >
 		isCollidable(direction, 0))
@@ -50,7 +50,7 @@ void Entity::setDirection(int direction)
 	}
 }
 
-void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	UNUSED(states);
 
@@ -77,7 +77,7 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.draw(sprite);
 }
 
-bool Entity::turnProgress(const float delta)
+bool Character::turnProgress(const float delta)
 {
 	if (m_direction)
 	{
@@ -90,7 +90,7 @@ bool Entity::turnProgress(const float delta)
 	return true;
 }
 
-bool Entity::turnEnd(const float delta)
+bool Character::turnEnd(const float delta)
 {
 	if (m_dead)
 	{
@@ -114,11 +114,11 @@ bool Entity::turnEnd(const float delta)
 
 		setPosition(rx * 32, ry * 32);
 
-		for (Entity *entity : m_entityManager.entities())
+		for (IEntity *entity : m_entityManager.entities())
 		{
 			if (entity != this && entity->getPosition() == getPosition())
 			{
-				entity->kill();
+				entity->setIsDead(true);
 			}
 		}
 
@@ -126,12 +126,12 @@ bool Entity::turnEnd(const float delta)
 		{
 			if (triggerArea.type() == "cloner")
 			{
-				const auto targetXOffset = atoi(triggerArea.property("xOffset").data());
-				const auto targetYOffset = atoi(triggerArea.property("yOffset").data());
+				const auto targetXOffset = stoi(triggerArea.property("xOffset"));
+				const auto targetYOffset = stoi(triggerArea.property("yOffset"));
 				const sf::Vector2f targetPosition(getPosition() + sf::Vector2f(targetXOffset * 32, targetYOffset * 32));
 
 				bool isTargetPositionEmpty = true;
-				for (Entity *entity : m_entityManager.entities())
+				for (IEntity *entity : m_entityManager.entities())
 				{
 					if (entity->getPosition() == targetPosition)
 					{
@@ -161,18 +161,21 @@ bool Entity::turnEnd(const float delta)
 	return false;
 }
 
-void Entity::kill()
+void Character::setIsDead(bool isDead)
 {
-	m_animatedSpriteState.setSegment(10, 16);
-	m_dead = true;
+	if (isDead)
+	{
+		m_animatedSpriteState.setSegment(10, 16);
+		m_dead = true;
+	}
 }
 
-bool Entity::isDead() const
+bool Character::isDead() const
 {
 	return m_dead;
 }
 
-bool Entity::isCollidable(int tx, int ty) const
+bool Character::isCollidable(int tx, int ty) const
 {
 	const auto &position = getPosition();
 	const auto x = floor(position.x / 32 + .5f);

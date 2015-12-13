@@ -4,18 +4,18 @@
 #include <vector>
 #include <unordered_set>
 
-class Entity;
+class IEntity;
 
 class EntityManager
 {
 	public:
-		void add(Entity *entity);
-		void remove(Entity *entity);
+		void add(IEntity *entity);
+		void remove(IEntity *entity);
 
-		std::unordered_set<Entity *> entities() const;
+		std::unordered_set<IEntity *> entities() const;
 
 	private:
-		std::unordered_set<Entity *> m_entities;
+		std::unordered_set<IEntity *> m_entities;
 };
 
 #endif // ENTITYMANAGER_H
