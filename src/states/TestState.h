@@ -58,6 +58,9 @@ class TestState : public IState
 		EntityCreationContext m_entityCreationContext;
 		std::vector<PlayerCharacter*> m_playerCharacters;
 
+		sf::Texture m_hourGlassTexture;
+		sf::Sprite m_hourGlassSprite;
+
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_wormAnimationStrip;
 		sf::Texture m_tntTexture;

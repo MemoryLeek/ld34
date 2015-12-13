@@ -27,6 +27,11 @@ TestState::TestState(StateCreationContext &context)
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
+	m_hourGlassTexture.loadFromFile("sprites/hourglass.png");
+	m_hourGlassSprite.setTexture(m_hourGlassTexture);
+	m_hourGlassSprite.setOrigin(sf::Vector2f(m_hourGlassTexture.getSize()) / 2.f);
+	m_hourGlassSprite.setPosition(m_window.getSize().x / 2.f, 64);
+
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
@@ -245,5 +250,10 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	target.draw(m_deathText);
 	target.draw(m_victoryText);
+	if (m_turnHandler.isRunning())
+	{
+		target.draw(m_hourGlassSprite);
+	}
+	target.setView(m_view);
 }
 
