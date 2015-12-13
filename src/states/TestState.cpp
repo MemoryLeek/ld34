@@ -13,7 +13,7 @@ TestState::TestState(StateCreationContext &context)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_collisionHandler, m_entityManager)
 	, m_statusIndicators(m_tntTexture, m_snowflakeTexture)
-	, m_map("maps/1.json", m_lightContext)
+	, m_map("maps/2.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
@@ -70,12 +70,15 @@ void TestState::update(const float delta)
 			++characterIterator;
 		}
 	}
-	y += 32 * 5;
-	if (y < 360)
+	if (y)
 	{
-		y = 360;
+		y += 32 * 5;
+		if (y < 360)
+		{
+			y = 360;
+		}
+		m_view.setCenter(m_window.getSize().x / 2, y);
 	}
-	m_view.setCenter(m_window.getSize().x / 2, y);
 
 	m_fpsTimer += delta;
 
