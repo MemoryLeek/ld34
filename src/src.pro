@@ -34,7 +34,8 @@ SOURCES += main.cpp \
     AnimatedSpriteState.cpp \
     AnimatedSpriteSegment.cpp \
     Character.cpp \
-    Player.cpp
+    Player.cpp \
+    StatusIndicators.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -68,7 +69,8 @@ HEADERS += \
     AnimatedSpriteSegment.h \
     Character.h \
     IEntity.h \
-    Player.h
+    Player.h \
+    StatusIndicators.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

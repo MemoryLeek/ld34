@@ -3,12 +3,16 @@
 
 #include "Character.h"
 
+class StatusIndicators;
+
 class PlayerCharacter : public Character
 {
 	public:
-		PlayerCharacter(const sf::Texture &texture, std::vector<PlayerCharacter *> &playerCharacterList, const EntityCreationContext &context);
+		PlayerCharacter(const sf::Texture &texture, const StatusIndicators &statusIndicators, std::vector<PlayerCharacter *> &playerCharacterList, const EntityCreationContext &context);
 
 	protected:
+		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 		bool turnStart(const float delta) override;
 
 		void handleMove(const float delta, const int direction) override;
@@ -17,6 +21,7 @@ class PlayerCharacter : public Character
 		void clone(const sf::Vector2f &destination) override;
 
 	private:
+		const StatusIndicators &m_statusIndicators;
 		std::vector<PlayerCharacter*> &m_playerCharacterList;
 
 		int m_powerUp;

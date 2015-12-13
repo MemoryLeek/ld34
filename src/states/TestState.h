@@ -14,6 +14,7 @@
 #include "Enemy.h"
 #include "ITextureProvider.h"
 #include "StateHandler.h"
+#include "StatusIndicators.h"
 
 #include "tiled/Map.h"
 
@@ -57,6 +58,9 @@ class TestState : public IState
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_wormAnimationStrip;
+		sf::Texture m_tntTexture;
+		sf::Texture m_snowflakeTexture;
+		StatusIndicators m_statusIndicators;
 
 		Tiled::Map m_map;
 		LightContext m_lightContext;

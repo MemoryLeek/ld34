@@ -12,6 +12,7 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_collisionHandler, m_entityManager)
+	, m_statusIndicators(m_tntTexture, m_snowflakeTexture)
 	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
@@ -30,6 +31,9 @@ TestState::TestState(StateCreationContext &context)
 
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
 
+	m_tntTexture.loadFromFile("sprites/bomb.png");
+	m_snowflakeTexture.loadFromFile("sprites/snowflake.png");
+
 	for (const auto& spawnPoint : m_map.spawnPoints())
 	{
 		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_playerCharacters, m_entityCreationContext);
@@ -38,7 +42,7 @@ TestState::TestState(StateCreationContext &context)
 
 	for (const auto& spawnPoint : m_map.playerSpawnPoints())
 	{
-		auto* player = new PlayerCharacter(m_testEntityDiffuse, m_playerCharacters, m_entityCreationContext);
+		auto* player = new PlayerCharacter(m_testEntityDiffuse, m_statusIndicators, m_playerCharacters, m_entityCreationContext);
 		player->setPosition(sf::Vector2f(spawnPoint));
 		m_playerCharacters.push_back(std::move(player));
 	}

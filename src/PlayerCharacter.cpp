@@ -1,9 +1,13 @@
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include "EntityManager.h"
 #include "PlayerCharacter.h"
+#include "StatusIndicators.h"
 #include "Util.h"
 
-PlayerCharacter::PlayerCharacter(const sf::Texture &texture, std::vector<PlayerCharacter*> &playerCharacterList, const EntityCreationContext &context)
+PlayerCharacter::PlayerCharacter(const sf::Texture &texture, const StatusIndicators &statusIndicators, std::vector<PlayerCharacter*> &playerCharacterList, const EntityCreationContext &context)
 	: Character(texture, context)
+	, m_statusIndicators(statusIndicators)
 	, m_playerCharacterList(playerCharacterList)
 	, m_powerUp(Neutral)
 	, m_powerUpTimer(0)
@@ -11,6 +15,25 @@ PlayerCharacter::PlayerCharacter(const sf::Texture &texture, std::vector<PlayerC
 	, m_frozenTickTimer(0)
 {
 
+}
+
+void PlayerCharacter::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	Character::draw(target, states);
+
+	if (m_kaboomTickTimer)
+	{
+		sf::Sprite bomb(m_statusIndicators.tnt());
+		bomb.setPosition(getPosition() + sf::Vector2f(0, -64));
+		target.draw(bomb);
+	}
+
+	if (m_frozenTickTimer)
+	{
+		sf::Sprite snowflake(m_statusIndicators.snowflake());
+		snowflake.setPosition(getPosition() + sf::Vector2f(0, -64));
+		target.draw(snowflake);
+	}
 }
 
 bool PlayerCharacter::turnStart(const float delta)
@@ -95,7 +118,7 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 
 void PlayerCharacter::clone(const sf::Vector2f &destination)
 {
-	auto* newCharacter = new PlayerCharacter(m_texture, m_playerCharacterList, m_creationContext);
+	auto* newCharacter = new PlayerCharacter(m_texture, m_statusIndicators, m_playerCharacterList, m_creationContext);
 	newCharacter->setPosition(destination);
 
 	m_playerCharacterList.push_back(newCharacter);

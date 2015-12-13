@@ -46,7 +46,7 @@ class Character : public IEntity
 			Frozen = 4
 		};
 
-		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 		int getTileType(int tx, int ty) const;
 
