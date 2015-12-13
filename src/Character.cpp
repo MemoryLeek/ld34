@@ -83,6 +83,12 @@ bool Character::turnProgress(const float delta)
 {
 	if (m_direction)
 	{
+		if ((m_direction < 0 && getPosition().x == 0) ||
+			(m_direction > 0 && getPosition().x == 39 * 32))
+		{
+			return true;
+		}
+
 		AnimatedSprite sprite(m_texture, m_animatedSpriteState);
 		sprite.update(delta);
 
