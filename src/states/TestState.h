@@ -44,9 +44,6 @@ class TestState : public IState
 		sf::RenderWindow& m_window;
 		sf::View m_view;
 
-		sf::Vector2i m_mouseWindowPosition;
-		sf::Vector2f m_mouseWorldPosition;
-
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
@@ -74,7 +71,6 @@ class TestState : public IState
 
 		Tiled::Map m_map;
 		LightContext m_lightContext;
-		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
 		TurnHandler m_turnHandler;
 		StateHandler &m_stateHandler;

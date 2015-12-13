@@ -19,7 +19,6 @@ TestState::TestState(StateCreationContext &context)
 	, m_victoryText("STAGE CLEARED", "Press any key to proceed")
 	, m_map(m_mapSelectionContext.current(), m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
-	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
 	, m_turnHandler(m_entityManager)
 	, m_stateHandler(context.m_stateHandler)
@@ -103,23 +102,12 @@ void TestState::update(const float delta)
 
 void TestState::mouseMoveEvent(const sf::Event& event)
 {
-	m_mouseWindowPosition.x = event.mouseMove.x;
-	m_mouseWindowPosition.y = event.mouseMove.y;
-	m_mouseWorldPosition = m_window.mapPixelToCoords(m_mouseWindowPosition);
-
-	m_mouseLight.setPosition(sf::Vector2f(sf::Vector2i(m_mouseWorldPosition)));
+	UNUSED(event);
 }
 
 void TestState::mouseScrollEvent(const sf::Event& event)
 {
-	if (event.mouseWheel.x > 0)
-	{
-		m_mouseLight.setHeight(m_mouseLight.height() - 0.05f);
-	}
-	else
-	{
-		m_mouseLight.setHeight(m_mouseLight.height() + 0.05f);
-	}
+	UNUSED(event);
 }
 
 void TestState::keyPressedEvent(const sf::Event& event)
@@ -220,7 +208,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
 		m_lightBuffer.draw(*light);
 	}
-	m_lightBuffer.draw(m_mouseLight);
+
 	m_lightBuffer.display();
 
 	// Step 3 - Draw the light buffer to the screen with BlendMultiply
