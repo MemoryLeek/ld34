@@ -3,6 +3,7 @@
 SoundEffectPlayer::SoundEffectPlayer()
 {
 	m_soundBuffers[SoundEffect::Explosion].loadFromFile("sfx/bomb.wav");
+	m_soundBuffers[SoundEffect::Cloning].loadFromFile("sfx/clone.wav");
 }
 
 void SoundEffectPlayer::play(SoundEffectPlayer::SoundEffect effect, const sf::Vector2f &position)

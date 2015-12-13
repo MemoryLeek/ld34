@@ -12,6 +12,7 @@
 #include "PlayerCharacter.h"
 #include "Util.h"
 #include "PlayerStateManager.h"
+#include "SoundEffectPlayer.h"
 
 #include "tiled/Map.h"
 
@@ -198,6 +199,7 @@ bool Character::turnEnd(const float delta)
 				if (isTargetPositionEmpty)
 				{
 					clone(targetPosition);
+					m_soundEffectPlayer.play(SoundEffectPlayer::SoundEffect::Cloning, targetPosition);
 				}
 			}
 			else if(triggerArea.type() == "goal" && dynamic_cast<PlayerCharacter*>(this))

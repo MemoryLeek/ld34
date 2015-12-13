@@ -13,7 +13,8 @@ class SoundEffectPlayer
 	public:
 		enum class SoundEffect
 		{
-			Explosion
+			Explosion,
+			Cloning
 		};
 
 		SoundEffectPlayer();
