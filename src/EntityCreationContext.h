@@ -11,18 +11,20 @@ namespace Tiled
 class CollisionHandler;
 class EntityManager;
 class PlayerState;
+class SoundEffectPlayer;
 
 class EntityCreationContext
 {
 	friend class Character;
 
 	public:
-		EntityCreationContext(CollisionHandler &collisionHandler, EntityManager &entityManager, PlayerState &playerStateManager);
+		EntityCreationContext(CollisionHandler &collisionHandler, EntityManager &entityManager, PlayerState &playerStateManager, SoundEffectPlayer &soundEffectPlayer);
 
 	private:
 		CollisionHandler &m_collisionHandler;
 		EntityManager &m_entityManager;
 		PlayerState &m_playerState;
+		SoundEffectPlayer &m_soundEffectPlayer;
 };
 
 #endif // ENTITYCREATIONCONTEXT_H

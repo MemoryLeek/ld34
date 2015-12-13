@@ -2,6 +2,7 @@
 
 #include "EntityManager.h"
 #include "PlayerCharacter.h"
+#include "SoundEffectPlayer.h"
 #include "StatusIndicators.h"
 #include "Util.h"
 
@@ -60,6 +61,7 @@ bool PlayerCharacter::turnStart(const float delta)
 					entity->setIsDead(true);
 				}
 			}
+			m_soundEffectPlayer.play(SoundEffectPlayer::SoundEffect::Explosion, getPosition());
 		}
 	}
 

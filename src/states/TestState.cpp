@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <SFML/Audio/Listener.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -12,7 +13,7 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_mapSelectionContext(context.m_mapSelectionContext)
-	, m_entityCreationContext(m_collisionHandler, m_entityManager, m_playerState)
+	, m_entityCreationContext(m_collisionHandler, m_entityManager, m_playerState, m_soundEffectPlayer)
 	, m_statusIndicators(m_tntTexture, m_snowflakeTexture)
 	, m_deathText("YOU ARE DEAD", "Press any key to restart")
 	, m_victoryText("STAGE CLEARED", "Press any key to proceed")
@@ -83,6 +84,7 @@ void TestState::update(const float delta)
 			y = 360;
 		}
 		m_view.setCenter(m_window.getSize().x / 2, y);
+		sf::Listener::setPosition(m_window.getSize().x / 2, y, 0.f);
 	}
 
 	m_fpsTimer += delta;

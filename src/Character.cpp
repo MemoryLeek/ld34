@@ -19,6 +19,7 @@ Character::Character(const sf::Texture &texture, const EntityCreationContext &co
 	: m_texture(texture)
 	, m_creationContext(context)
 	, m_entityManager(context.m_entityManager)
+	, m_soundEffectPlayer(context.m_soundEffectPlayer)
 	, m_animatedSpriteState(36)
 	, m_collisionHandler(context.m_collisionHandler)
 	, m_playerState(context.m_playerState)

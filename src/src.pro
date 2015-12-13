@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     StatusIndicators.cpp \
     TextOverlay.cpp \
     PlayerStateManager.cpp \
-	MapSelectionContext.cpp
+	MapSelectionContext.cpp \
+    SoundEffectPlayer.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -76,7 +77,8 @@ HEADERS += \
     StatusIndicators.h \
     TextOverlay.h \
     PlayerStateManager.h \
-	MapSelectionContext.h
+	MapSelectionContext.h \
+    SoundEffectPlayer.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src

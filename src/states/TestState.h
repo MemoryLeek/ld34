@@ -15,6 +15,7 @@
 #include "ITextureProvider.h"
 #include "StateHandler.h"
 #include "StatusIndicators.h"
+#include "SoundEffectPlayer.h"
 #include "TextOverlay.h"
 #include "PlayerStateManager.h"
 
@@ -53,6 +54,7 @@ class TestState : public IState
 		EnemyTextureProvider m_enemyTextureProvider;
 		MapSelectionContext &m_mapSelectionContext;
 
+		SoundEffectPlayer m_soundEffectPlayer;
 		EntityManager m_entityManager;
 		PlayerState m_playerState;
 		EntityCreationContext m_entityCreationContext;

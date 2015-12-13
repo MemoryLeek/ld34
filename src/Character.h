@@ -20,6 +20,7 @@ class EntityManager;
 class ITextureProvider;
 class ISpriteSegmentDefinition;
 class PlayerState;
+class SoundEffectPlayer;
 
 class Character : public IEntity
 {
@@ -54,6 +55,7 @@ class Character : public IEntity
 		const sf::Texture &m_texture;
 		const EntityCreationContext &m_creationContext;
 		EntityManager &m_entityManager;
+		SoundEffectPlayer &m_soundEffectPlayer;
 
 	private:
 		AnimatedSpriteState m_animatedSpriteState;
