@@ -39,8 +39,8 @@ int Character::direction() const
 
 void Character::setDirection(int direction)
 {
-	if (isCollidable(0, 1) >
-		isCollidable(direction, 0))
+	if (getTileType(0, 1) >
+		getTileType(direction, 0))
 	{
 		m_direction = direction;
 	}
@@ -64,7 +64,9 @@ void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	if (m_direction)
 	{
-		sprite.setScale(-m_direction, 1);
+		const auto &scale = getScale();
+
+		sprite.setScale(-m_direction * scale.x, scale.y);
 	}
 
 	if (m_dead)
@@ -106,7 +108,9 @@ bool Character::turnEnd(const float delta)
 		return false;
 	}
 
-	if (isCollidable(0, 1))
+	const int tileType = getTileType(0, 1);
+
+	if (tileType)
 	{
 		const auto &position = getPosition();
 		const auto rx = round(position.x / 32.0f);
@@ -151,7 +155,7 @@ bool Character::turnEnd(const float delta)
 			}
 		}
 
-		return true;
+		return handlePowerUp(tileType, delta);
 	}
 	else
 	{
@@ -175,11 +179,11 @@ bool Character::isDead() const
 	return m_dead;
 }
 
-bool Character::isCollidable(int tx, int ty) const
+int Character::getTileType(int tx, int ty) const
 {
 	const auto &position = getPosition();
 	const auto x = floor(position.x / 32 + .5f);
 	const auto y = floor(position.y / 32);
 
-	return m_collisionHandler.isCollidable(x + tx , y + ty);
+	return m_collisionHandler.getTileType(x + tx , y + ty);
 }

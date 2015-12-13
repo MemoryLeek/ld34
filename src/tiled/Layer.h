@@ -20,7 +20,7 @@ namespace Tiled
 			bool property(const std::string& name) const;
 			Layer& setProperty(const std::string& name, bool isSet);
 
-			bool hasTileAt(int x, int y) const;
+			int tileAt(int x, int y) const;
 
 		protected:
 			void draw(sf::RenderTarget &target, sf::RenderStates states) const;

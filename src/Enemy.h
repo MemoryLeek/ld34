@@ -17,7 +17,9 @@ class Enemy : public Character
 
 	private:
 		bool turnStart(const float delta) override;
+
 		void handleMove(const float delta, const int direction) override;
+		bool handlePowerUp(int type, float delta) override;
 
 		const std::vector<PlayerCharacter*> &m_playerCharacters;
 };

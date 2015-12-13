@@ -22,6 +22,8 @@ class IEntity
 
 	protected:
 		virtual void handleMove(const float delta, const int direction) = 0;
+		virtual bool handlePowerUp(int type, float delta) = 0;
+
 		virtual void clone(const sf::Vector2f &destination) = 0;
 };
 

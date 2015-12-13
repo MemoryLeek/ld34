@@ -10,11 +10,18 @@ class PlayerCharacter : public Character
 
 	protected:
 		bool turnStart(const float delta) override;
+
 		void handleMove(const float delta, const int direction) override;
+		bool handlePowerUp(int type, float delta) override;
+
 		void clone(const sf::Vector2f &destination) override;
 
 	private:
 		std::vector<PlayerCharacter*> &m_playerCharacterList;
+
+		int m_powerUp;
+
+		float m_powerUpTimer;
 };
 
 #endif // PLAYERCHARACTER_H

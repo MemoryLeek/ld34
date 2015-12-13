@@ -69,13 +69,13 @@ bool Enemy::turnStart(const float delta)
 	int direction = (isPlayerToTheRightOfMe) ? 1 : -1;
 
 	const bool isPlayerAboveMe = targetCharacter->getPosition().y < getPosition().y;
-	const bool isNewPositionInTheAir = !isCollidable(direction, 1);
+	const bool isNewPositionInTheAir = !getTileType(direction, 1);
 	if (isNewPositionInTheAir && isPlayerAboveMe)
 	{
-		direction = isCollidable(-direction, 1) ? -direction : direction ;
+		direction = getTileType(-direction, 1) ? -direction : direction ;
 	}
 
-	const bool isNewPositionAWall = isCollidable(direction, 0);
+	const bool isNewPositionAWall = getTileType(direction, 0);
 	if (isNewPositionAWall)
 	{
 		direction = -direction;
@@ -106,4 +106,11 @@ bool Enemy::turnStart(const float delta)
 void Enemy::handleMove(const float delta, const int direction)
 {
 	move(direction * (delta * 128), 0);
+}
+
+bool Enemy::handlePowerUp(int type, float delta)
+{
+	UNUSED(type);
+
+	return true;
 }

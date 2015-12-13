@@ -38,9 +38,17 @@ class Character : public IEntity
 		bool isDead() const;
 
 	protected:
+		enum PowerUp
+		{
+			Neutral = 1,
+			Growing = 2,
+			Explosive = 3,
+			Frozen = 4
+		};
+
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-		bool isCollidable(int tx, int ty) const;
+		int getTileType(int tx, int ty) const;
 
 		const sf::Texture &m_texture;
 		const EntityCreationContext &m_creationContext;

@@ -10,17 +10,17 @@ CollisionHandler::CollisionHandler(const Tiled::Map &map)
 {
 }
 
-bool CollisionHandler::isCollidable(int x, int y) const
+int CollisionHandler::getTileType(int x, int y) const
 {
 	for (const auto& layer : m_map.layers())
 	{
-		if (layer.property("collidable") && layer.hasTileAt(x, y))
+		if (layer.property("collidable"))
 		{
-			return true;
+			return layer.tileAt(x, y);
 		}
 	}
 
-	return false;
+	return 0;
 }
 
 std::vector<Tiled::Trigger> CollisionHandler::getTriggers(int x, int y) const

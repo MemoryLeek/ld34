@@ -13,7 +13,8 @@ class CollisionHandler
 	public:
 		CollisionHandler(const Tiled::Map& map);
 
-		bool isCollidable(int x, int y) const;
+		int getTileType(int x, int y) const;
+
 		std::vector<Tiled::Trigger> getTriggers(int x, int y) const;
 		std::vector<Tiled::Trigger> getTriggers(const sf::Vector2f& pos) const;
 
