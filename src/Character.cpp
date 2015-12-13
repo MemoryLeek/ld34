@@ -42,8 +42,17 @@ int Character::direction() const
 
 void Character::setDirection(int direction)
 {
-	if (getTileType(0, 1) >
-		getTileType(direction, 0))
+	const auto &scale = getScale();
+
+	const auto additionalScale = (scale.x - 1);
+	const auto isOnGround =
+		getTileType(-1 * additionalScale, 1) ||
+		getTileType(0, 1) ||
+		getTileType(1 * additionalScale, 1);
+
+	if (isOnGround &&
+		!getTileType(direction, 0) &&
+		!getTileType(direction * scale.x, 0))
 	{
 		m_direction = direction;
 	}
@@ -71,6 +80,10 @@ void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	if (m_direction)
 	{
 		sprite.setScale(-m_direction * scale.x, scale.y);
+	}
+	else
+	{
+		sprite.setScale(scale);
 	}
 
 	if (m_dead)
@@ -122,10 +135,13 @@ bool Character::turnEnd(const float delta)
 	auto tileType = getTileType(0, 1);
 
 	auto* player = dynamic_cast<PlayerCharacter*>(this);
+
 	if (player && player->isHuge())
 	{
 		int otherTilesImOn[2] = {getTileType(-1, 1), getTileType(1, 1)};
-		tileType = (otherTilesImOn[0] > tileType) ? otherTilesImOn[0] : (otherTilesImOn[1] > tileType) ? otherTilesImOn[1] : tileType;
+		tileType = std::max(otherTilesImOn[0], std::max(otherTilesImOn[1], tileType));
+
+////		std::cout << tileType << std::endl;
 	}
 
 	if (tileType)
