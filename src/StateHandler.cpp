@@ -24,6 +24,11 @@ IState &StateHandler::currentState() const
 	return *m_currentState;
 }
 
+bool StateHandler::isChangingState() const
+{
+	return m_progress > 0;
+}
+
 void StateHandler::update(double delta)
 {
 	if (m_progress > 0)

@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 
+#include "MapSelectionContext.h"
+
 class StateCreationContext;
 class IState;
 
@@ -15,12 +17,14 @@ class StateHandler : public sf::Drawable
 
 		IState &currentState() const;
 
+		bool isChangingState() const;
+
 		template<class TState>
 		void changeState(bool transition)
 		{
 			if (m_progress <= 0)
 			{
-				StateCreationContext context(*this, m_window);
+				StateCreationContext context(*this, m_mapSelectionContext, m_window);
 
 				if (transition)
 				{
@@ -43,6 +47,8 @@ class StateHandler : public sf::Drawable
 
 	private:
 		sf::RenderWindow &m_window;
+
+		MapSelectionContext m_mapSelectionContext;
 
 		IState *m_currentState;
 		IState *m_nextState;

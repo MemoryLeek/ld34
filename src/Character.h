@@ -19,6 +19,7 @@ class EntityCreationContext;
 class EntityManager;
 class ITextureProvider;
 class ISpriteSegmentDefinition;
+class PlayerState;
 
 class Character : public IEntity
 {
@@ -57,6 +58,7 @@ class Character : public IEntity
 	private:
 		AnimatedSpriteState m_animatedSpriteState;
 		CollisionHandler &m_collisionHandler;
+		PlayerState &m_playerState;
 
 		int m_direction;
 

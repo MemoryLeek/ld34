@@ -15,6 +15,8 @@
 #include "ITextureProvider.h"
 #include "StateHandler.h"
 #include "StatusIndicators.h"
+#include "TextOverlay.h"
+#include "PlayerStateManager.h"
 
 #include "tiled/Map.h"
 
@@ -44,15 +46,15 @@ class TestState : public IState
 		sf::Vector2i m_mouseWindowPosition;
 		sf::Vector2f m_mouseWorldPosition;
 
-		sf::Font m_font;
-
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
 		PlayerCharacterTextureProvider m_playerCharacterTextureProvider;
 		EnemyTextureProvider m_enemyTextureProvider;
+		MapSelectionContext &m_mapSelectionContext;
 
 		EntityManager m_entityManager;
+		PlayerState m_playerState;
 		EntityCreationContext m_entityCreationContext;
 		std::vector<PlayerCharacter*> m_playerCharacters;
 
@@ -62,6 +64,9 @@ class TestState : public IState
 		sf::Texture m_snowflakeTexture;
 		StatusIndicators m_statusIndicators;
 
+		TextOverlay m_deathText;
+		TextOverlay m_victoryText;
+
 		Tiled::Map m_map;
 		LightContext m_lightContext;
 		Light m_mouseLight;
@@ -70,7 +75,6 @@ class TestState : public IState
 		StateHandler &m_stateHandler;
 
 		mutable float m_fpsTimer;
-		mutable float m_deathTimer;
 
 		mutable int m_fpsCounter;
 };

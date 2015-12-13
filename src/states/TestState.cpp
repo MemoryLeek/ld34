@@ -11,19 +11,19 @@
 TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
-	, m_entityCreationContext(m_collisionHandler, m_entityManager)
+	, m_mapSelectionContext(context.m_mapSelectionContext)
+	, m_entityCreationContext(m_collisionHandler, m_entityManager, m_playerState)
 	, m_statusIndicators(m_tntTexture, m_snowflakeTexture)
-	, m_map("maps/2.json", m_lightContext)
+	, m_deathText("YOU ARE DEAD", "Press any key to restart")
+	, m_victoryText("STAGE CLEARED", "Press any key to proceed")
+	, m_map(m_mapSelectionContext.current(), m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
 	, m_turnHandler(m_entityManager)
 	, m_stateHandler(context.m_stateHandler)
-	, m_deathTimer(0)
 	, m_fpsCounter(0)
 {
-	m_font.loadFromFile("fonts/oxygen.ttf");
-
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
@@ -84,7 +84,12 @@ void TestState::update(const float delta)
 
 	if (m_playerCharacters.size() == 0)
 	{
-		m_deathTimer += delta;
+		m_deathText.update(delta);
+	}
+
+	if (m_playerState.isGoalReached())
+	{
+		m_victoryText.update(delta);
 	}
 }
 
@@ -111,6 +116,18 @@ void TestState::mouseScrollEvent(const sf::Event& event)
 
 void TestState::keyPressedEvent(const sf::Event& event)
 {
+	if (m_playerState.isGoalReached())
+	{
+		if (!m_stateHandler.isChangingState())
+		{
+			m_mapSelectionContext.nextMap();
+
+			m_stateHandler.changeState<TestState>(true);
+		}
+
+		return;
+	}
+
 	if (m_playerCharacters.size() == 0)
 	{
 		m_stateHandler.changeState<TestState>(true);
@@ -226,38 +243,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		m_fpsTimer = 0;
 	}
 
-	if (m_playerCharacters.size() == 0)
-	{
-		const auto alpha = std::min(m_deathTimer / 1.0f, 1.0f);
-
-		sf::Color textColor(255, 255, 255, alpha * 255.0f);
-
-		sf::Text deathText1("YOU ARE DEAD", m_font);
-		deathText1.setCharacterSize(50);
-		deathText1.setStyle(sf::Text::Bold);
-		deathText1.setColor(textColor);
-
-		sf::Text deathText2("Press any key to restart", m_font);
-		deathText2.setCharacterSize(20);
-		deathText2.setColor(textColor);
-
-		const auto &windowSize = m_window.getSize();
-		const auto &textBounds1 = deathText1.getLocalBounds();
-		const auto &textBounds2 = deathText2.getLocalBounds();
-
-		deathText1.setPosition((windowSize.x - textBounds1.width) / 2, (windowSize.y - textBounds1.height) / 2);
-		deathText2.setPosition((windowSize.x - textBounds2.width) / 2, (windowSize.y - textBounds2.height) / 2 + 60);
-
-		const auto &defaultView = target.getDefaultView();
-
-		sf::RectangleShape overlay;
-		overlay.setSize((sf::Vector2f)windowSize);
-		overlay.setFillColor(sf::Color(0, 0, 0, alpha * 150));
-
-		target.setView(defaultView);
-		target.draw(overlay);
-		target.draw(deathText1);
-		target.draw(deathText2);
-	}
+	target.draw(m_deathText);
+	target.draw(m_victoryText);
 }
 

@@ -11,6 +11,8 @@
 #include "EntityManager.h"
 #include "PlayerCharacter.h"
 #include "Util.h"
+#include "PlayerStateManager.h"
+
 #include "tiled/Map.h"
 
 Character::Character(const sf::Texture &texture, const EntityCreationContext &context)
@@ -19,6 +21,7 @@ Character::Character(const sf::Texture &texture, const EntityCreationContext &co
 	, m_entityManager(context.m_entityManager)
 	, m_animatedSpriteState(36)
 	, m_collisionHandler(context.m_collisionHandler)
+	, m_playerState(context.m_playerState)
 	, m_direction(0)
 	, m_dead(false)
 	, m_deathTimer(0)
@@ -182,7 +185,7 @@ bool Character::turnEnd(const float delta)
 			}
 			else if(triggerArea.type() == "goal" && dynamic_cast<PlayerCharacter*>(this))
 			{
-				std::cout << "You win, congrats!" << std::endl;
+				m_playerState.setIsGoalReached(true);
 			}
 		}
 

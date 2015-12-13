@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "MapSelectionContext.h"
+
 class StateHandler;
 
 class StateCreationContext
@@ -12,10 +14,11 @@ class StateCreationContext
 	friend class MenuState;
 
 	public:
-		StateCreationContext(StateHandler &stateHandler, sf::RenderWindow &window);
+		StateCreationContext(StateHandler &stateHandler, MapSelectionContext &mapSelectionContext, sf::RenderWindow &window);
 
 	private:
 		StateHandler &m_stateHandler;
+		MapSelectionContext &m_mapSelectionContext;
 
 		sf::RenderWindow &m_window;
 };

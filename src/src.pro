@@ -35,7 +35,10 @@ SOURCES += main.cpp \
     AnimatedSpriteSegment.cpp \
     Character.cpp \
     Player.cpp \
-    StatusIndicators.cpp
+    StatusIndicators.cpp \
+    TextOverlay.cpp \
+    PlayerStateManager.cpp \
+	MapSelectionContext.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -70,7 +73,10 @@ HEADERS += \
     Character.h \
     IEntity.h \
     Player.h \
-    StatusIndicators.h
+    StatusIndicators.h \
+    TextOverlay.h \
+    PlayerStateManager.h \
+	MapSelectionContext.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src
