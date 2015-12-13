@@ -45,7 +45,8 @@ class Character : public IEntity
 			Neutral = 1,
 			Growing = 2,
 			Explosive = 3,
-			Frozen = 4
+			Frozen = 4,
+			Purge = 5
 		};
 
 		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

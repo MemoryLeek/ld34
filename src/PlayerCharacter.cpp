@@ -101,20 +101,23 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 		return true;
 	}
 
-	if (type != Growing)
+	if (type != Neutral)
 	{
-		if (getScale().x > 1)
+		if (type != Growing)
 		{
-			scale(1 - (delta * 5), 1 - (delta * 5));
-			if (getScale().x < 1)
+			if (getScale().x > 1)
 			{
-				setScale(1, 1);
+				scale(1 - (delta * 5), 1 - (delta * 5));
+				if (getScale().x < 1)
+				{
+					setScale(1, 1);
+				}
 			}
 		}
-	}
 
-	m_kaboomTickTimer = 0;
-	m_frozenTickTimer = 0;
+		m_kaboomTickTimer = 0;
+		m_frozenTickTimer = 0;
+	}
 
 	switch (type)
 	{
