@@ -2,6 +2,7 @@
 #define TESTSTATE_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include "CollisionHandler.h"
 #include "PlayerCharacter.h"
@@ -12,6 +13,7 @@
 #include "TurnHandler.h"
 #include "Enemy.h"
 #include "ITextureProvider.h"
+#include "StateHandler.h"
 
 #include "tiled/Map.h"
 
@@ -41,6 +43,8 @@ class TestState : public IState
 		sf::Vector2i m_mouseWindowPosition;
 		sf::Vector2f m_mouseWorldPosition;
 
+		sf::Font m_font;
+
 		mutable sf::RenderTexture m_lightBuffer;
 		mutable sf::RenderTexture m_normalMapFbo;
 
@@ -49,7 +53,7 @@ class TestState : public IState
 
 		EntityManager m_entityManager;
 		EntityCreationContext m_entityCreationContext;
-		PlayerCharacter m_testEntity;
+		PlayerCharacter m_player;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_wormAnimationStrip;
@@ -59,8 +63,11 @@ class TestState : public IState
 		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
 		TurnHandler m_turnHandler;
+		StateHandler m_stateHandler;
 
 		mutable float m_fpsTimer;
+		mutable float m_deathTimer;
+
 		mutable int m_fpsCounter;
 };
 

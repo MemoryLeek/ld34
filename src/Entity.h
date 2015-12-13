@@ -34,6 +34,8 @@ class Entity
 
 		void kill();
 
+		bool isDead() const;
+
 	protected:
 		virtual void handleMove(const float delta, const int direction) = 0;
 

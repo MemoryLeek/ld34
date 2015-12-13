@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "AnimatedSprite.h"
@@ -11,39 +12,48 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_collisionHandler, m_entityManager)
-	, m_testEntity(m_testEntityDiffuse, m_entityCreationContext)
-	, m_map("maps/1.json", m_lightContext)
+	, m_player(m_testEntityDiffuse, m_entityCreationContext)
+	, m_map("maps/2.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
 	, m_turnHandler(m_entityManager)
+	, m_stateHandler(context.m_stateHandler)
+	, m_deathTimer(0)
 	, m_fpsCounter(0)
 {
+	m_font.loadFromFile("fonts/oxygen.ttf");
+
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 
-	m_testEntity.setPosition(16 * 10, 0);
+	m_player.setPosition(16 * 10, 0);
 
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
 
 	for (const auto& spawnPoint : m_map.spawnPoints())
 	{
-		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_testEntity, m_entityCreationContext);
+		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_player, m_entityCreationContext);
 		enemy->setPosition(sf::Vector2f(spawnPoint));
 	}
 
-	m_testEntity.setPosition(sf::Vector2f(m_map.playerSpawnPoints().front()));
+	m_player.setPosition(sf::Vector2f(m_map.playerSpawnPoints().front()));
 }
 
 void TestState::update(const float delta)
 {
 	m_turnHandler.update(delta);
 
-	m_view.setCenter(m_window.getSize().x / 2, m_testEntity.getPosition().y + 32 * 5);
+	m_view.setCenter(m_window.getSize().x / 2, m_player.getPosition().y + 32 * 5);
 
 	m_fpsTimer += delta;
+
+	if (m_player.isDead())
+	{
+		m_deathTimer += delta;
+	}
 }
 
 void TestState::mouseMoveEvent(const sf::Event& event)
@@ -69,13 +79,18 @@ void TestState::mouseScrollEvent(const sf::Event& event)
 
 void TestState::keyPressedEvent(const sf::Event& event)
 {
+	if (m_player.isDead())
+	{
+		return;
+	}
+
 	switch (event.key.code)
 	{
 		case sf::Keyboard::D:
 		{
 			if (!m_turnHandler.isRunning())
 			{
-				m_testEntity.setDirection(1);
+				m_player.setDirection(1);
 				m_turnHandler.execute();
 			}
 
@@ -86,7 +101,7 @@ void TestState::keyPressedEvent(const sf::Event& event)
 		{
 			if (!m_turnHandler.isRunning())
 			{
-				m_testEntity.setDirection(-1);
+				m_player.setDirection(-1);
 				m_turnHandler.execute();
 			}
 
@@ -169,6 +184,40 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		std::cout << "FPS: " << m_fpsCounter << std::endl;
 		m_fpsCounter = 0;
 		m_fpsTimer = 0;
+	}
+
+	if (m_player.isDead())
+	{
+		const auto alpha = std::min(m_deathTimer / 1.0f, 1.0f);
+
+		sf::Color textColor(255, 255, 255, alpha * 255.0f);
+
+		sf::Text deathText1("YOU ARE DEAD", m_font);
+		deathText1.setCharacterSize(50);
+		deathText1.setStyle(sf::Text::Bold);
+		deathText1.setColor(textColor);
+
+		sf::Text deathText2("Press any key to restart", m_font);
+		deathText2.setCharacterSize(20);
+		deathText2.setColor(textColor);
+
+		const auto &windowSize = m_window.getSize();
+		const auto &textBounds1 = deathText1.getLocalBounds();
+		const auto &textBounds2 = deathText2.getLocalBounds();
+
+		deathText1.setPosition((windowSize.x - textBounds1.width) / 2, (windowSize.y - textBounds1.height) / 2);
+		deathText2.setPosition((windowSize.x - textBounds2.width) / 2, (windowSize.y - textBounds2.height) / 2 + 60);
+
+		const auto &defaultView = target.getDefaultView();
+
+		sf::RectangleShape overlay;
+		overlay.setSize((sf::Vector2f)windowSize);
+		overlay.setFillColor(sf::Color(0, 0, 0, alpha * 150));
+
+		target.setView(defaultView);
+		target.draw(overlay);
+		target.draw(deathText1);
+		target.draw(deathText2);
 	}
 }
 

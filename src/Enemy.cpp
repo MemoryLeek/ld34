@@ -40,7 +40,7 @@ bool Enemy::turnStart(const float delta)
 	const bool isPlayerMovingAwayFromMe = m_player.direction() == direction;
 	if (isPlayerRightNextToMe && !isPlayerMovingAwayFromMe)
 	{
-		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
+		m_player.kill();
 	}
 
 	const bool willPlayerEndUpInTheSameTileAsI =
@@ -48,7 +48,7 @@ bool Enemy::turnStart(const float delta)
 		m_player.getPosition().y == getPosition().y;
 	if (willPlayerEndUpInTheSameTileAsI)
 	{
-		*reinterpret_cast<int*>(0xDEADBEEF) = 0xF00BAA;
+		m_player.kill();
 	}
 
 	return true;

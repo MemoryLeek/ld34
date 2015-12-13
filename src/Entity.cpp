@@ -100,7 +100,7 @@ bool Entity::turnEnd(const float delta)
 
 		if ((m_deathTimer += delta) > 0.8f)
 		{
-			delete this;
+			m_entityManager.remove(this);
 
 			return true;
 		}
@@ -138,6 +138,11 @@ void Entity::kill()
 {
 	m_animatedSpriteState.setSegment(10, 16);
 	m_dead = true;
+}
+
+bool Entity::isDead() const
+{
+	return m_dead;
 }
 
 bool Entity::isCollidable(int tx, int ty) const
