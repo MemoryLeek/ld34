@@ -152,9 +152,9 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 				else if (layerName == "players")
 				{
 					const auto& playerSpawns = layer.find("objects").value();
-					if (playerSpawns.is_null() || playerSpawns.size() != 1)
+					if (playerSpawns.is_null() || playerSpawns.size() == 0)
 					{
-						std::cout << "None or too many player spawns" << std::endl;
+						std::cout << "No player spawns" << std::endl;
 					}
 					else
 					{
