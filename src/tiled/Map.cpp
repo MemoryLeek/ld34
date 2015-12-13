@@ -94,6 +94,7 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 
 							const auto radius = (height > width) ? height : width;
 							std::unique_ptr<Light> lp(new Light(lightContext, radius, sf::Color(red, green, blue)));
+							lp->setHeight(.8f);
 							lp->setPosition(x, y);
 							m_lights.push_back(std::move(lp));
 						}
