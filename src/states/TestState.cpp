@@ -70,7 +70,12 @@ void TestState::update(const float delta)
 			++characterIterator;
 		}
 	}
-	m_view.setCenter(m_window.getSize().x / 2, y + 32 * 5);
+	y += 32 * 5;
+	if (y < 360)
+	{
+		y = 360;
+	}
+	m_view.setCenter(m_window.getSize().x / 2, y);
 
 	m_fpsTimer += delta;
 
