@@ -7,6 +7,8 @@ PlayerCharacter::PlayerCharacter(const sf::Texture &texture, std::vector<PlayerC
 	, m_playerCharacterList(playerCharacterList)
 	, m_powerUp(Neutral)
 	, m_powerUpTimer(0)
+	, m_kaboomTickTimer(0)
+	, m_frozenTickTimer(0)
 {
 
 }
@@ -14,6 +16,24 @@ PlayerCharacter::PlayerCharacter(const sf::Texture &texture, std::vector<PlayerC
 bool PlayerCharacter::turnStart(const float delta)
 {
 	UNUSED(delta);
+
+	if (m_kaboomTickTimer > 0)
+	{
+		m_kaboomTickTimer--;
+		if (!m_kaboomTickTimer)
+		{
+			// Kill everything within a certain radius
+			for (const auto& entity : m_entityManager.entities())
+			{
+				const auto distanceVector = entity->getPosition() - getPosition();
+				const auto killRadius = 32 * 5;
+				if (sqrt(distanceVector.x * distanceVector.x + distanceVector.y * distanceVector.y) < killRadius)
+				{
+					entity->setIsDead(true);
+				}
+			}
+		}
+	}
 
 	if (m_frozenTickTimer > 0)
 	{
@@ -56,6 +76,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 			setScale(2, 2);
 //			scale(delta * 2, delta * 2);
 
+			break;
+		}
+		case Explosive:
+		{
+			m_kaboomTickTimer = 5;
 			break;
 		}
 		case Frozen:

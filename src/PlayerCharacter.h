@@ -22,6 +22,7 @@ class PlayerCharacter : public Character
 		int m_powerUp;
 
 		float m_powerUpTimer;
+		int m_kaboomTickTimer;
 		int m_frozenTickTimer;
 };
 
