@@ -14,7 +14,8 @@ class SoundEffectPlayer
 		enum class SoundEffect
 		{
 			Explosion,
-			Cloning
+			Cloning,
+			Squish
 		};
 
 		SoundEffectPlayer();

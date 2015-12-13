@@ -222,6 +222,7 @@ void Character::setIsDead(bool isDead)
 {
 	if (isDead)
 	{
+		m_soundEffectPlayer.play(SoundEffectPlayer::SoundEffect::Squish, getPosition());
 		m_animatedSpriteState.setSegment(10, 16);
 		m_dead = true;
 	}
