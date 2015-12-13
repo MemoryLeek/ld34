@@ -116,7 +116,14 @@ bool Character::turnEnd(const float delta)
 	}
 
 //	const auto &scale = getScale();
-	const auto tileType = getTileType(0, 1);
+	auto tileType = getTileType(0, 1);
+
+	auto* player = dynamic_cast<PlayerCharacter*>(this);
+	if (player && player->isHuge())
+	{
+		int otherTilesImOn[2] = {getTileType(-1, 1), getTileType(1, 1)};
+		tileType = (otherTilesImOn[0] > tileType) ? otherTilesImOn[0] : (otherTilesImOn[1] > tileType) ? otherTilesImOn[1] : tileType;
+	}
 
 	if (tileType)
 	{
@@ -130,7 +137,23 @@ bool Character::turnEnd(const float delta)
 		{
 			if (entity != this && entity->getPosition() == getPosition())
 			{
-				entity->setIsDead(true);
+				PlayerCharacter* player = dynamic_cast<PlayerCharacter*>(entity);
+				if (!(player && player->isHuge()))
+				{
+					entity->setIsDead(true);
+				}
+			}
+		}
+
+		// Special kill handling for player when huge
+		if (player && player->isHuge())
+		{
+			for (IEntity *entity : m_entityManager.entities())
+			{
+				if (entity != this && ((entity->getPosition() == getPosition() - sf::Vector2f(-32, 0)) || (entity->getPosition() == getPosition() - sf::Vector2f(32, 0))))
+				{
+					entity->setIsDead(true);
+				}
 			}
 		}
 

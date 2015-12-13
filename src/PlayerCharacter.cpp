@@ -17,6 +17,11 @@ PlayerCharacter::PlayerCharacter(const sf::Texture &texture, const StatusIndicat
 
 }
 
+bool PlayerCharacter::isHuge() const
+{
+	return getScale().x > 1;
+}
+
 void PlayerCharacter::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	Character::draw(target, states);
@@ -98,7 +103,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 	{
 		if (getScale().x > 1)
 		{
-			scale(1 - (delta * 4), 1 - (delta * 4));
+			scale(1 - (delta * 5), 1 - (delta * 5));
+			if (getScale().x < 1)
+			{
+				setScale(1, 1);
+			}
 		}
 	}
 
@@ -109,7 +118,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 	{
 		case Growing:
 		{
-			scale(1 + (delta * 4), 1 + (delta * 4));
+			scale(1 + (delta * 5), 1 + (delta * 5));
+			if (getScale().x > 3)
+			{
+				setScale(3, 3);
+			}
 			break;
 		}
 		case Explosive:

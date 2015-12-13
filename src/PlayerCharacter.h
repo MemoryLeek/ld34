@@ -10,6 +10,8 @@ class PlayerCharacter : public Character
 	public:
 		PlayerCharacter(const sf::Texture &texture, const StatusIndicators &statusIndicators, std::vector<PlayerCharacter *> &playerCharacterList, const EntityCreationContext &context);
 
+		bool isHuge() const;
+
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

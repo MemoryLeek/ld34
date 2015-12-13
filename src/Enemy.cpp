@@ -89,7 +89,14 @@ bool Enemy::turnStart(const float delta)
 	const bool isPlayerMovingAwayFromMe = targetCharacter->direction() == direction;
 	if (isPlayerRightNextToMe && !isPlayerMovingAwayFromMe)
 	{
-		targetCharacter->setIsDead(true);
+		if (!targetCharacter->isHuge())
+		{
+			targetCharacter->setIsDead(true);
+		}
+		else
+		{
+			setIsDead(true);
+		}
 	}
 
 	const bool willPlayerEndUpInTheSameTileAsI =
@@ -97,7 +104,14 @@ bool Enemy::turnStart(const float delta)
 		targetCharacter->getPosition().y == getPosition().y;
 	if (willPlayerEndUpInTheSameTileAsI)
 	{
-		targetCharacter->setIsDead(true);
+		if (!targetCharacter->isHuge())
+		{
+			targetCharacter->setIsDead(true);
+		}
+		else
+		{
+			setIsDead(true);
+		}
 	}
 
 	return true;
