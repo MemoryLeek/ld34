@@ -3,6 +3,10 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+namespace Tiled
+{
+	class Map;
+}
 class CollisionHandler;
 class EntityManager;
 

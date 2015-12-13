@@ -9,6 +9,10 @@
 #include "AnimatedSpriteState.h"
 #include "ITurn.h"
 
+namespace Tiled
+{
+	class Map;
+}
 class CollisionHandler;
 class EntityCreationContext;
 class EntityManager;
@@ -39,16 +43,19 @@ class Entity
 	protected:
 		virtual void handleMove(const float delta, const int direction) = 0;
 
+		virtual void clone(const sf::Vector2f &destination) = 0;
+
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 		bool isCollidable(int tx, int ty) const;
 
-	private:
 		const sf::Texture &m_texture;
+		const EntityCreationContext &m_creationContext;
+		EntityManager &m_entityManager;
 
+	private:
 		AnimatedSpriteState m_animatedSpriteState;
 		CollisionHandler &m_collisionHandler;
-		EntityManager &m_entityManager;
 
 		int m_direction;
 

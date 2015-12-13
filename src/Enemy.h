@@ -1,6 +1,8 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+#include <memory>
+
 #include "Entity.h"
 
 class PlayerCharacter;
@@ -8,13 +10,16 @@ class PlayerCharacter;
 class Enemy : public Entity
 {
 	public:
-		Enemy(const sf::Texture &texture, PlayerCharacter &player, const EntityCreationContext &context);
+		Enemy(const sf::Texture &texture, const std::vector<PlayerCharacter*> &playerCharacters, const EntityCreationContext &context);
+
+	protected:
+		void clone(const sf::Vector2f &destination) override;
 
 	private:
 		bool turnStart(const float delta) override;
 		void handleMove(const float delta, const int direction) override;
 
-		PlayerCharacter &m_player;
+		const std::vector<PlayerCharacter*> &m_playerCharacters;
 };
 
 #endif // ENEMY_H

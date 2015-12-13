@@ -53,7 +53,7 @@ class TestState : public IState
 
 		EntityManager m_entityManager;
 		EntityCreationContext m_entityCreationContext;
-		PlayerCharacter m_player;
+		std::vector<PlayerCharacter*> m_playerCharacters;
 
 		sf::Texture m_testEntityDiffuse;
 		sf::Texture m_wormAnimationStrip;

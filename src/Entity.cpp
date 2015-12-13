@@ -10,12 +10,14 @@
 #include "Entity.h"
 #include "EntityManager.h"
 #include "Util.h"
+#include "tiled/Map.h"
 
 Entity::Entity(const sf::Texture &texture, const EntityCreationContext &context)
 	: m_texture(texture)
+	, m_creationContext(context)
+	, m_entityManager(context.m_entityManager)
 	, m_animatedSpriteState(36)
 	, m_collisionHandler(context.m_collisionHandler)
-	, m_entityManager(context.m_entityManager)
 	, m_direction(0)
 	, m_dead(false)
 	, m_deathTimer(0)
@@ -44,11 +46,6 @@ void Entity::setDirection(int direction)
 	else
 	{
 		m_direction = 0;
-	}
-
-	if (m_collisionHandler.getTriggers(getPosition()).size() > 0)
-	{
-//		std::cout << "Inside triggers" << std::endl;
 	}
 }
 
@@ -121,6 +118,31 @@ bool Entity::turnEnd(const float delta)
 			if (entity != this && entity->getPosition() == getPosition())
 			{
 				entity->kill();
+			}
+		}
+
+		for (const auto& triggerArea : m_collisionHandler.getTriggers(getPosition()))
+		{
+			if (triggerArea.type() == "cloner")
+			{
+				const auto targetXOffset = atoi(triggerArea.property("xOffset").data());
+				const auto targetYOffset = atoi(triggerArea.property("yOffset").data());
+				const sf::Vector2f targetPosition(getPosition() + sf::Vector2f(targetXOffset * 32, targetYOffset * 32));
+
+				bool isTargetPositionEmpty = true;
+				for (Entity *entity : m_entityManager.entities())
+				{
+					if (entity->getPosition() == targetPosition)
+					{
+						isTargetPositionEmpty = false;
+						break;
+					}
+				}
+
+				if (isTargetPositionEmpty)
+				{
+					clone(targetPosition);
+				}
 			}
 		}
 

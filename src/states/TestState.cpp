@@ -12,8 +12,7 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_collisionHandler, m_entityManager)
-	, m_player(m_testEntityDiffuse, m_entityCreationContext)
-	, m_map("maps/2.json", m_lightContext)
+	, m_map("maps/1.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
@@ -29,28 +28,40 @@ TestState::TestState(StateCreationContext &context)
 
 	m_testEntityDiffuse.loadFromFile("sprites/cube.png");
 
-	m_player.setPosition(16 * 10, 0);
-
 	m_wormAnimationStrip.loadFromFile("sprites/worm.png");
 
 	for (const auto& spawnPoint : m_map.spawnPoints())
 	{
-		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_player, m_entityCreationContext);
+		Enemy *enemy = new Enemy(m_wormAnimationStrip, m_playerCharacters, m_entityCreationContext);
 		enemy->setPosition(sf::Vector2f(spawnPoint));
 	}
 
-	m_player.setPosition(sf::Vector2f(m_map.playerSpawnPoints().front()));
+	for (const auto& spawnPoint : m_map.playerSpawnPoints())
+	{
+		auto* player = new PlayerCharacter(m_testEntityDiffuse, m_playerCharacters, m_entityCreationContext);
+		player->setPosition(sf::Vector2f(spawnPoint));
+		m_playerCharacters.push_back(std::move(player));
+	}
 }
 
 void TestState::update(const float delta)
 {
 	m_turnHandler.update(delta);
 
-	m_view.setCenter(m_window.getSize().x / 2, m_player.getPosition().y + 32 * 5);
+	// Center the view on the player character that is furthest down
+	int y = 0;
+	for (const auto& character : m_playerCharacters)
+	{
+		if (character->getPosition().y > y)
+		{
+			y = character->getPosition().y;
+		}
+	}
+	m_view.setCenter(m_window.getSize().x / 2, y + 32 * 5);
 
 	m_fpsTimer += delta;
 
-	if (m_player.isDead())
+	if (m_playerCharacters.size() == 0)
 	{
 		m_deathTimer += delta;
 	}
@@ -79,7 +90,7 @@ void TestState::mouseScrollEvent(const sf::Event& event)
 
 void TestState::keyPressedEvent(const sf::Event& event)
 {
-	if (m_player.isDead())
+	if (m_playerCharacters.size() == 0)
 	{
 		return;
 	}
@@ -90,7 +101,10 @@ void TestState::keyPressedEvent(const sf::Event& event)
 		{
 			if (!m_turnHandler.isRunning())
 			{
-				m_player.setDirection(1);
+				for (auto& character : m_playerCharacters)
+				{
+					character->setDirection(1);
+				}
 				m_turnHandler.execute();
 			}
 
@@ -101,7 +115,10 @@ void TestState::keyPressedEvent(const sf::Event& event)
 		{
 			if (!m_turnHandler.isRunning())
 			{
-				m_player.setDirection(-1);
+				for (auto& character : m_playerCharacters)
+				{
+					character->setDirection(-1);
+				}
 				m_turnHandler.execute();
 			}
 
@@ -186,7 +203,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		m_fpsTimer = 0;
 	}
 
-	if (m_player.isDead())
+	if (m_playerCharacters.size() == 0)
 	{
 		const auto alpha = std::min(m_deathTimer / 1.0f, 1.0f);
 

@@ -219,17 +219,18 @@
                 {
                  "height":32,
                  "id":13,
-                 "name":"cloner1",
+                 "name":"1",
                  "properties":
                     {
-
+                     "xOffset":"2",
+                     "yOffset":"0"
                     },
                  "rotation":0,
                  "type":"cloner",
                  "visible":true,
                  "width":32,
-                 "x":384,
-                 "y":320
+                 "x":512,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -265,7 +266,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":16,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "properties":
     {

@@ -136,6 +136,15 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 							const auto& name = trigger.find("name").value();
 							const auto& type = trigger.find("type").value();
 							m_triggerAreas.push_back(Trigger(name, type, x, y, width, height));
+
+							if (trigger.find("properties") != trigger.end())
+							{
+								const auto& properties = trigger.find("properties").value();
+								for (auto it = properties.begin(); it != properties.end(); it++)
+								{
+									m_triggerAreas.back().setProperty(it.key(), it.value());
+								}
+							}
 						}
 					}
 				}
