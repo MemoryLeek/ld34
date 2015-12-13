@@ -113,6 +113,8 @@ void TestState::keyPressedEvent(const sf::Event& event)
 {
 	if (m_playerCharacters.size() == 0)
 	{
+		m_stateHandler.changeState<TestState>(true);
+
 		return;
 	}
 

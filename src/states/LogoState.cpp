@@ -8,6 +8,7 @@
 LogoState::LogoState(StateCreationContext &context)
 	: m_stateHandler(context.m_stateHandler)
 	, m_window(context.m_window)
+	, m_timer(0)
 {
 	m_texture.loadFromFile("images/logo.png");
 
@@ -22,7 +23,10 @@ LogoState::LogoState(StateCreationContext &context)
 
 void LogoState::update(const float delta)
 {
-	UNUSED(delta);
+	if ((m_timer += delta) > 1.0f)
+	{
+		skip();
+	}
 }
 
 void LogoState::mouseMoveEvent(const sf::Event &event)
@@ -39,7 +43,7 @@ void LogoState::keyPressedEvent(const sf::Event &event)
 {
 	UNUSED(event);
 
-	m_stateHandler.changeState<TestState>(true);
+	skip();
 }
 
 void LogoState::keyReleasedEvent(const sf::Event &event)
@@ -52,4 +56,9 @@ void LogoState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	UNUSED(states);
 
 	target.draw(m_sprite);
+}
+
+void LogoState::skip()
+{
+	m_stateHandler.changeState<TestState>(true);
 }

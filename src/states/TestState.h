@@ -67,7 +67,7 @@ class TestState : public IState
 		Light m_mouseLight;
 		CollisionHandler m_collisionHandler;
 		TurnHandler m_turnHandler;
-		StateHandler m_stateHandler;
+		StateHandler &m_stateHandler;
 
 		mutable float m_fpsTimer;
 		mutable float m_deathTimer;

@@ -18,18 +18,21 @@ class StateHandler : public sf::Drawable
 		template<class TState>
 		void changeState(bool transition)
 		{
-			StateCreationContext context(*this, m_window);
-
-			if (transition)
+			if (m_progress <= 0)
 			{
-				m_nextState = new TState(context);
-				m_progress = TRANSITION_LENGTH;
-			}
-			else
-			{
-				delete m_currentState;
+				StateCreationContext context(*this, m_window);
 
-				m_currentState = new TState(context);
+				if (transition)
+				{
+					m_nextState = new TState(context);
+					m_progress = TRANSITION_LENGTH;
+				}
+				else
+				{
+					delete m_currentState;
+
+					m_currentState = new TState(context);
+				}
 			}
 		}
 

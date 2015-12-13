@@ -27,11 +27,15 @@ class LogoState : public IState
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	private:
+		void skip();
+
 		StateHandler &m_stateHandler;
 
 		sf::RenderWindow &m_window;
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
+
+		float m_timer;
 };
 
 #endif // LOGOSTATE_H
