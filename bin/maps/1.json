@@ -229,8 +229,8 @@
                  "type":"cloner",
                  "visible":true,
                  "width":32,
-                 "x":512,
-                 "y":480
+                 "x":384,
+                 "y":320
                 }],
          "opacity":1,
          "type":"objectgroup",

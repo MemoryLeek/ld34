@@ -12,7 +12,7 @@ TestState::TestState(StateCreationContext &context)
 	: m_window(context.m_window)
 	, m_view(sf::Vector2f(0, 0), sf::Vector2f(m_window.getSize()))
 	, m_entityCreationContext(m_collisionHandler, m_entityManager)
-	, m_map("maps/1.json", m_lightContext)
+	, m_map("maps/2.json", m_lightContext)
 	, m_lightContext(m_map, m_normalMapFbo.getTexture(), m_entityManager)
 	, m_mouseLight(m_lightContext, 512, sf::Color::White)
 	, m_collisionHandler(m_map)
@@ -50,11 +50,20 @@ void TestState::update(const float delta)
 
 	// Center the view on the player character that is furthest down
 	int y = 0;
-	for (const auto& character : m_playerCharacters)
+	auto characterIterator = m_playerCharacters.begin();
+	while (characterIterator != m_playerCharacters.end())
 	{
-		if (character->getPosition().y > y)
+		if ((*characterIterator)->isDead())
 		{
-			y = character->getPosition().y;
+			characterIterator = m_playerCharacters.erase(characterIterator++);
+		}
+		else
+		{
+			if ((*characterIterator)->getPosition().y > y)
+			{
+				y = (*characterIterator)->getPosition().y;
+			}
+			++characterIterator;
 		}
 	}
 	m_view.setCenter(m_window.getSize().x / 2, y + 32 * 5);
