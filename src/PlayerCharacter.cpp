@@ -88,6 +88,11 @@ void PlayerCharacter::handleMove(const float delta, const int direction)
 
 bool PlayerCharacter::handlePowerUp(int type, float delta)
 {
+	if (type == Neutral)
+	{
+		return true;
+	}
+
 	if (m_powerUp == type)
 	{
 		return true;
@@ -101,23 +106,20 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 		return true;
 	}
 
-	if (type != Neutral)
+	if (type != Growing)
 	{
-		if (type != Growing)
+		if (getScale().x > 1)
 		{
-			if (getScale().x > 1)
+			scale(1 - (delta * 5), 1 - (delta * 5));
+			if (getScale().x < 1)
 			{
-				scale(1 - (delta * 5), 1 - (delta * 5));
-				if (getScale().x < 1)
-				{
-					setScale(1, 1);
-				}
+				setScale(1, 1);
 			}
 		}
-
-		m_kaboomTickTimer = 0;
-		m_frozenTickTimer = 0;
 	}
+
+	m_kaboomTickTimer = 0;
+	m_frozenTickTimer = 0;
 
 	switch (type)
 	{
