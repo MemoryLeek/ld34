@@ -9,6 +9,7 @@
 #include "EntityCreationContext.h"
 #include "Entity.h"
 #include "EntityManager.h"
+#include "PlayerCharacter.h"
 #include "Util.h"
 #include "tiled/Map.h"
 
@@ -143,6 +144,10 @@ bool Entity::turnEnd(const float delta)
 				{
 					clone(targetPosition);
 				}
+			}
+			else if(triggerArea.type() == "goal" && dynamic_cast<PlayerCharacter*>(this))
+			{
+				std::cout << "You win, congrats!" << std::endl;
 			}
 		}
 
