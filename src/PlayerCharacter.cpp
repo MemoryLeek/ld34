@@ -92,6 +92,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 		return true;
 	}
 
+	// Reset other powerups
+	setScale(1, 1);
+	m_kaboomTickTimer = 0;
+	m_frozenTickTimer = 0;
+
 	switch (type)
 	{
 		case Growing:
