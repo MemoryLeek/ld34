@@ -209,7 +209,7 @@ bool Character::turnEnd(const float delta)
 	}
 	else
 	{
-		move(0, delta * 184);
+		move(0, delta * 368);
 	}
 
 	return false;
