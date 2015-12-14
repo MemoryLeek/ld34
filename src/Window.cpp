@@ -1,3 +1,4 @@
+#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
@@ -19,6 +20,11 @@ void Window::run()
 
 	sf::Clock deltaTimer;
 	sf::Event event;
+
+	sf::Music music;
+	music.openFromFile("music/ld34.wav");
+	music.setLoop(true);
+	music.play();
 
 	StateHandler stateHandler(window);
 
