@@ -21,6 +21,9 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 
 //	std::cout << json << std::endl;
 
+	m_size.x = json.find("width").value();
+	m_size.y = json.find("height").value();
+
 	const auto& tilesets = json.find("tilesets").value();
 	if (tilesets.is_null() || tilesets.size() == 0)
 	{
@@ -197,6 +200,11 @@ Map::Map(const std::string& filename, const LightContext& lightContext)
 			}
 		}
 	}
+}
+
+const sf::Vector2i Map::size() const
+{
+	return m_size;
 }
 
 const std::vector<Layer>& Map::layers() const

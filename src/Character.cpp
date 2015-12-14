@@ -133,6 +133,11 @@ bool Character::turnEnd(const float delta)
 		return false;
 	}
 
+	if (m_collisionHandler.isOnMapBottom(getPosition().y / 32))
+	{
+		setIsDead(true);
+	}
+
 //	const auto &scale = getScale();
 	auto tileType = getTileType(0, 1);
 

@@ -18,6 +18,7 @@ namespace Tiled
 		public:
 			Map(const std::string& filename, const LightContext& lightContext);
 
+			const sf::Vector2i size() const;
 			const std::vector<Layer>& layers() const;
 			const std::vector<std::unique_ptr<Light>>& lights() const;
 			const std::vector<sf::Vector2i>& spawnPoints() const;
@@ -31,6 +32,7 @@ namespace Tiled
 			void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 		private:
+			sf::Vector2i m_size;
 			std::vector<Tileset> m_tilesets;
 			std::vector<Layer> m_layers;
 			std::vector<std::unique_ptr<Light>> m_lights;

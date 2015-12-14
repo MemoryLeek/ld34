@@ -23,6 +23,11 @@ int CollisionHandler::getTileType(int x, int y) const
 	return 0;
 }
 
+bool CollisionHandler::isOnMapBottom(int y) const
+{
+	return y >= m_map.size().y - 1;
+}
+
 std::vector<Tiled::Trigger> CollisionHandler::getTriggers(int x, int y) const
 {
 	std::vector<Tiled::Trigger> triggers;
