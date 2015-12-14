@@ -77,7 +77,7 @@ void TestState::update(const float delta)
 	}
 	if (y)
 	{
-		y += 32 * 5;
+		y += 32 * 3;
 		if (y < 360)
 		{
 			y = 360;
