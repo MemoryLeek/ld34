@@ -102,7 +102,7 @@ bool Enemy::turnStart(const float delta)
 	const bool willPlayerEndUpInTheSameTileAsI =
 		abs(targetCharacter->getPosition().x + (targetCharacter->direction() * 32) - getPosition().x) == 32 &&
 		targetCharacter->getPosition().y == getPosition().y;
-	if (willPlayerEndUpInTheSameTileAsI)
+	if (willPlayerEndUpInTheSameTileAsI && !targetCharacter->isFrozen())
 	{
 		if (!targetCharacter->isHuge())
 		{

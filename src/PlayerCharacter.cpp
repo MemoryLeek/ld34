@@ -23,6 +23,11 @@ bool PlayerCharacter::isHuge() const
 	return getScale().x > 1;
 }
 
+bool PlayerCharacter::isFrozen() const
+{
+	return m_frozenTickTimer > 0;
+}
+
 void PlayerCharacter::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	Character::draw(target, states);

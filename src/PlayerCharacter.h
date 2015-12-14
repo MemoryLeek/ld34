@@ -11,6 +11,7 @@ class PlayerCharacter : public Character
 		PlayerCharacter(const sf::Texture &texture, const StatusIndicators &statusIndicators, std::vector<PlayerCharacter *> &playerCharacterList, const EntityCreationContext &context);
 
 		bool isHuge() const;
+		bool isFrozen() const;
 
 	protected:
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
