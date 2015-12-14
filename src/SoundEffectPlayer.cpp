@@ -23,6 +23,7 @@ void SoundEffectPlayer::play(SoundEffectPlayer::SoundEffect effect, const sf::Ve
 
 	// Otherwise we add a new emitter
 	m_soundEmitters.push_back(sf::Sound(m_soundBuffers[effect]));
+	m_soundEmitters.back().setAttenuation(0.01f);
 	m_soundEmitters.back().setPosition(position.x, position.y, 0);
 	m_soundEmitters.back().play();
 }

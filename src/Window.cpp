@@ -23,6 +23,7 @@ void Window::run()
 
 	sf::Music music;
 	music.openFromFile("music/ld34.wav");
+	music.setVolume(80);
 	music.setLoop(true);
 	music.play();
 
