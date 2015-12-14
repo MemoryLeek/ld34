@@ -5,6 +5,8 @@ SoundEffectPlayer::SoundEffectPlayer()
 	m_soundBuffers[SoundEffect::Explosion].loadFromFile("sfx/bomb.wav");
 	m_soundBuffers[SoundEffect::Cloning].loadFromFile("sfx/clone.wav");
 	m_soundBuffers[SoundEffect::Squish].loadFromFile("sfx/squish.wav");
+	m_soundBuffers[SoundEffect::Grow].loadFromFile("sfx/grow.wav");
+	m_soundBuffers[SoundEffect::Shrink].loadFromFile("sfx/shrink.wav");
 }
 
 void SoundEffectPlayer::play(SoundEffectPlayer::SoundEffect effect, const sf::Vector2f &position)

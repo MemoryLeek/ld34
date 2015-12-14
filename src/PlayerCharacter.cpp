@@ -108,6 +108,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 
 	if (type != Growing)
 	{
+		if (getScale().x == 3)
+		{
+			m_soundEffectPlayer.play(SoundEffectPlayer::SoundEffect::Shrink, getPosition());
+		}
+
 		if (getScale().x > 1)
 		{
 			scale(1 - (delta * 5), 1 - (delta * 5));
@@ -125,6 +130,11 @@ bool PlayerCharacter::handlePowerUp(int type, float delta)
 	{
 		case Growing:
 		{
+			if (getScale().x == 1)
+			{
+				m_soundEffectPlayer.play(SoundEffectPlayer::SoundEffect::Grow, getPosition());
+			}
+
 			scale(1 + (delta * 5), 1 + (delta * 5));
 			if (getScale().x > 3)
 			{

@@ -15,7 +15,9 @@ class SoundEffectPlayer
 		{
 			Explosion,
 			Cloning,
-			Squish
+			Squish,
+			Grow,
+			Shrink
 		};
 
 		SoundEffectPlayer();
