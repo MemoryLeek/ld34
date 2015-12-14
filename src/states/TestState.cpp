@@ -82,6 +82,10 @@ void TestState::update(const float delta)
 		{
 			y = 360;
 		}
+		else if (y > m_map.size().y * 32 - 360)
+		{
+			y = m_map.size().y * 32 - 360;
+		}
 		m_view.setCenter(m_window.getSize().x / 2, y);
 		sf::Listener::setPosition(m_view.getCenter().x, m_view.getCenter().y, 0);
 	}
