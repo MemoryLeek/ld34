@@ -180,6 +180,7 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.setView(m_view);
 
 	// Step 0 - Draw the map normals to the normal map FBO
+	m_normalMapFbo.setView(m_view);
 	m_normalMapFbo.clear(sf::Color(127, 127, 255)); // Make the empty background face us
 	m_map.drawBackgroundNormalMapTo(m_normalMapFbo, sf::BlendAlpha);
 
