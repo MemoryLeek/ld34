@@ -110,7 +110,15 @@ void Light::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	m_shadowMap.display();
 
 	// Draw from the screen space normal map to the lights normal map
-	sf::Sprite ssnm(m_context.screenSpaceNormalMap(), sf::IntRect(getPosition().x - m_radius, getPosition().y - m_radius, lightView.getSize().x, lightView.getSize().y));
+	sf::Sprite ssnm(
+		m_context.screenSpaceNormalMap(),
+		sf::IntRect(
+			getPosition().x - m_radius - (target.getView().getCenter().x - target.getView().getSize().x / 2),
+			getPosition().y - m_radius - (target.getView().getCenter().y - target.getView().getSize().y / 2),
+			lightView.getSize().x,
+			lightView.getSize().y
+		)
+	);
 	m_normalMap.draw(ssnm);
 	m_normalMap.display();
 
