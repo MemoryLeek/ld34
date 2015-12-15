@@ -5,11 +5,9 @@ MapSelectionContext::MapSelectionContext()
 {
 	m_maps =
 	{
-		"maps/5.json",
-		"maps/6.json",
 		"maps/1.json",
+		"maps/2.json",
 		"maps/3.json",
-		"maps/4.json"
 	};
 }
 
@@ -20,7 +18,7 @@ std::string MapSelectionContext::current() const
 
 void MapSelectionContext::nextMap()
 {
-	if (m_current < 4)
+	if (m_current < 2)
 	{
 		m_current++;
 	}
