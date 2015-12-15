@@ -22,7 +22,7 @@ TestState::TestState(StateCreationContext &context)
 	, m_collisionHandler(m_map)
 	, m_turnHandler(m_entityManager)
 	, m_stateHandler(context.m_stateHandler)
-	, m_fpsCounter(0)
+//	, m_fpsCounter(0)
 {
 	m_lightBuffer.create(m_window.getSize().x, m_window.getSize().y);
 	m_normalMapFbo.create(m_window.getSize().x, m_window.getSize().y);
@@ -90,7 +90,7 @@ void TestState::update(const float delta)
 		sf::Listener::setPosition(m_view.getCenter().x, m_view.getCenter().y, 0);
 	}
 
-	m_fpsTimer += delta;
+//	m_fpsTimer += delta;
 
 	if (m_playerCharacters.size() == 0)
 	{
@@ -235,13 +235,13 @@ void TestState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	}
 //	target.draw(m_testWorm);
 
-	m_fpsCounter++;
-	if (m_fpsTimer >= 1)
-	{
-		std::cout << "FPS: " << m_fpsCounter << std::endl;
-		m_fpsCounter = 0;
-		m_fpsTimer = 0;
-	}
+//	m_fpsCounter++;
+//	if (m_fpsTimer >= 1)
+//	{
+//		std::cout << "FPS: " << m_fpsCounter << std::endl;
+//		m_fpsCounter = 0;
+//		m_fpsTimer = 0;
+//	}
 
 	target.draw(m_deathText);
 	target.draw(m_victoryText);

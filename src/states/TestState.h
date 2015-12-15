@@ -75,9 +75,9 @@ class TestState : public IState
 		TurnHandler m_turnHandler;
 		StateHandler &m_stateHandler;
 
-		mutable float m_fpsTimer;
+//		mutable float m_fpsTimer;
 
-		mutable int m_fpsCounter;
+//		mutable int m_fpsCounter;
 };
 
 #endif // TESTSTATE_H

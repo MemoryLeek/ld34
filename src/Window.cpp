@@ -15,14 +15,14 @@ Window::Window()
 
 void Window::run()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "ld34");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kubble");
 	window.setKeyRepeatEnabled(false);
 
 	sf::Clock deltaTimer;
 	sf::Event event;
 
 	sf::Music music;
-	music.openFromFile("music/ld34.wav");
+	music.openFromFile("music/ld34.ogg");
 	music.setVolume(80);
 	music.setLoop(true);
 	music.play();

@@ -1,8 +1,8 @@
-TARGET = ld34
+TARGET = kubble
 DESTDIR = ../bin
 OBJECTS_DIR = build
 
-CONFIG += c++11 debug
+CONFIG += c++11 release
 CONFIG -= console
 QMAKE_CXXFLAGS += -Wall -Werror -Wno-unused-parameter
 
@@ -16,30 +16,30 @@ SOURCES += main.cpp \
 	states/LogoState.cpp \
 	StateHandler.cpp \
 	StateCreationContext.cpp \
-    states/MenuState.cpp \
-    MenuDefinition.cpp \
-    MenuDefinitionBuilder.cpp \
-    states/MainMenuState.cpp \
-    MenuDefinitionEntry.cpp \
-    CollisionHandler.cpp \
-    LightContext.cpp \
-    TurnHandler.cpp \
+	states/MenuState.cpp \
+	MenuDefinition.cpp \
+	MenuDefinitionBuilder.cpp \
+	states/MainMenuState.cpp \
+	MenuDefinitionEntry.cpp \
+	CollisionHandler.cpp \
+	LightContext.cpp \
+	TurnHandler.cpp \
 	EntityManager.cpp \
-    Enemy.cpp \
-    PlayerCharacter.cpp \
-    EntityCreationContext.cpp \
-    ITextureProvider.cpp \
-    AnimatedSprite.cpp \
-    tiled/Trigger.cpp \
-    AnimatedSpriteState.cpp \
-    AnimatedSpriteSegment.cpp \
-    Character.cpp \
-    Player.cpp \
-    StatusIndicators.cpp \
-    TextOverlay.cpp \
-    PlayerStateManager.cpp \
+	Enemy.cpp \
+	PlayerCharacter.cpp \
+	EntityCreationContext.cpp \
+	ITextureProvider.cpp \
+	AnimatedSprite.cpp \
+	tiled/Trigger.cpp \
+	AnimatedSpriteState.cpp \
+	AnimatedSpriteSegment.cpp \
+	Character.cpp \
+	Player.cpp \
+	StatusIndicators.cpp \
+	TextOverlay.cpp \
+	PlayerStateManager.cpp \
 	MapSelectionContext.cpp \
-    SoundEffectPlayer.cpp
+	SoundEffectPlayer.cpp
 
 HEADERS += \
 	tiled/Tileset.h \
@@ -53,32 +53,32 @@ HEADERS += \
 	StateHandler.h \
 	Util.h \
 	StateCreationContext.h \
-    states/MenuState.h \
-    MenuDefinition.h \
-    MenuDefinitionBuilder.h \
-    states/MainMenuState.h \
-    MenuDefinitionEntry.h \
-    CollisionHandler.h \
-    LightContext.h \
-    TurnHandler.h \
+	states/MenuState.h \
+	MenuDefinition.h \
+	MenuDefinitionBuilder.h \
+	states/MainMenuState.h \
+	MenuDefinitionEntry.h \
+	CollisionHandler.h \
+	LightContext.h \
+	TurnHandler.h \
 	EntityManager.h \
-    Enemy.h \
-    PlayerCharacter.h \
-    EntityCreationContext.h \
-    ITextureProvider.h \
-    AnimatedSprite.h \
+	Enemy.h \
+	PlayerCharacter.h \
+	EntityCreationContext.h \
+	ITextureProvider.h \
+	AnimatedSprite.h \
 	tiled/Trigger.h \
-    ITurn.h \
-    AnimatedSpriteState.h \
-    AnimatedSpriteSegment.h \
-    Character.h \
-    IEntity.h \
-    Player.h \
-    StatusIndicators.h \
-    TextOverlay.h \
-    PlayerStateManager.h \
+	ITurn.h \
+	AnimatedSpriteState.h \
+	AnimatedSpriteSegment.h \
+	Character.h \
+	IEntity.h \
+	Player.h \
+	StatusIndicators.h \
+	TextOverlay.h \
+	PlayerStateManager.h \
 	MapSelectionContext.h \
-    SoundEffectPlayer.h
+	SoundEffectPlayer.h
 
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
 INCLUDEPATH += ../libs/json/src
