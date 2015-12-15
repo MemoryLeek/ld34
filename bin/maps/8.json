@@ -53,7 +53,79 @@
          "draworder":"topdown",
          "height":64,
          "name":"lights",
-         "objects":[],
+         "objects":[
+                {
+                 "ellipse":true,
+                 "height":480,
+                 "id":115,
+                 "name":"",
+                 "properties":
+                    {
+                     "b":"255",
+                     "g":"255",
+                     "r":"255"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":480,
+                 "x":128,
+                 "y":64
+                }, 
+                {
+                 "ellipse":true,
+                 "height":192,
+                 "id":120,
+                 "name":"",
+                 "properties":
+                    {
+                     "b":"100",
+                     "g":"255",
+                     "r":"100"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":192,
+                 "x":768,
+                 "y":320
+                }, 
+                {
+                 "ellipse":true,
+                 "height":480,
+                 "id":121,
+                 "name":"",
+                 "properties":
+                    {
+                     "b":"255",
+                     "g":"255",
+                     "r":"255"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":480,
+                 "x":672,
+                 "y":-64
+                }, 
+                {
+                 "ellipse":true,
+                 "height":320,
+                 "id":122,
+                 "name":"",
+                 "properties":
+                    {
+                     "b":"255",
+                     "g":"255",
+                     "r":"255"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":320,
+                 "x":960,
+                 "y":224
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -190,7 +262,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":115,
+ "nextobjectid":123,
  "orientation":"orthogonal",
  "properties":
     {
