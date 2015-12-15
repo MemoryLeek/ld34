@@ -103,7 +103,14 @@ Layer& Layer::setProperty(const std::string &name, bool isSet)
 
 int Layer::tileAt(int x, int y) const
 {
-	return m_tileData[x + y * m_size.x];
+	const auto index = x + y * m_size.x;
+
+	if (index > 0 && m_tileData.size() > index)
+	{
+		return m_tileData[index];
+	}
+
+	return 0;
 }
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
