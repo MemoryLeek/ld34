@@ -2,3 +2,4 @@ Makefile
 *.pro.*
 build/
 bin/ld34
+bin/kubble
